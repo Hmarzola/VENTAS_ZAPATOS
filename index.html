@@ -1,1299 +1,1793 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Normalización de Bases de Datos - Sistema Interactivo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+      /* Header */
+      .header {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
 
-        .header h1 {
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+      .header h1 {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
 
-        .header p {
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
-            opacity: 0.9;
-        }
+      .header p {
+        font-size: clamp(0.9rem, 2vw, 1.2rem);
+        opacity: 0.9;
+        margin-bottom: 1rem;
+      }
 
-        .author-info {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
+      .team-info {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1rem auto;
+        max-width: 600px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
 
-        /* Container */
+      .team-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #ecf0f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .team-members {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .member-card {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .member-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .member-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ecf0f1;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .member-role {
+        font-size: 0.9rem;
+        color: #bdc3c7;
+        font-style: italic;
+      }
+
+      .project-info {
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      /* Container */
+      .container {
+        max-width: 1400px;
+        margin: 2rem auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      /* Navigation Tabs */
+      .nav-tabs {
+        display: flex;
+        background: #f8f9fa;
+        border-bottom: 3px solid #e9ecef;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .nav-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .nav-tab {
+        flex: 1;
+        min-width: 200px;
+        padding: 1rem 1.5rem;
+        background: #f8f9fa;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #495057;
+        transition: all 0.3s ease;
+        border-bottom: 3px solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .nav-tab:hover {
+        background: #e9ecef;
+        color: #3498db;
+        transform: translateY(-2px);
+      }
+
+      .nav-tab.active {
+        background: white;
+        color: #3498db;
+        border-bottom-color: #3498db;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Tab Content */
+      .tab-content {
+        display: none;
+        padding: 2rem;
+        animation: fadeInUp 0.5s ease-in-out;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Sections */
+      .section {
+        margin-bottom: 2rem;
+        padding: 2rem;
+        border-radius: 15px;
+        background: #f8f9fa;
+        border-left: 5px solid #3498db;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .section h3 {
+        color: #34495e;
+        margin: 1.5rem 0 1rem 0;
+        font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      }
+
+      /* Interactive Elements */
+      .interactive-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .interactive-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(52, 152, 219, 0.1),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .interactive-card:hover::before {
+        left: 100%;
+      }
+
+      .interactive-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        border-color: #3498db;
+      }
+
+      .interactive-card.expanded {
+        border-color: #27ae60;
+        background: linear-gradient(135deg, #f8fff8, #e8f6f3);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .card-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      .card-content.show {
+        display: block;
+      }
+
+      .expand-icon {
+        font-size: 1.2rem;
+        color: #3498db;
+        transition: transform 0.3s ease;
+      }
+
+      .interactive-card.expanded .expand-icon {
+        transform: rotate(180deg);
+      }
+
+      /* ERD Diagram */
+      .erd-container {
+        text-align: center;
+        margin: 2rem 0;
+        padding: 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .erd-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(52, 152, 219, 0.05) 50%,
+          transparent 70%
+        );
+        animation: shimmer 3s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      .erd-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        border: 3px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease;
+      }
+
+      .erd-container img:hover {
+        transform: scale(1.02);
+      }
+
+      /* Entity Analysis Grid */
+      .entity-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .entity-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #3498db;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .entity-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(to bottom, #3498db, #2980b9);
+        transition: width 0.3s ease;
+      }
+
+      .entity-card:hover::before {
+        width: 8px;
+      }
+
+      .entity-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .entity-card h4 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Progress Indicator */
+      .progress-container {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .progress-step {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .progress-step::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+
+      .progress-step.active::before {
+        opacity: 1;
+      }
+
+      .progress-step.active {
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .progress-step.completed {
+        background: #27ae60;
+        color: white;
+      }
+
+      /* Highlight Boxes */
+      .highlight {
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #ffc107;
+        margin: 1.5rem 0;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .success-box {
+        background: linear-gradient(135deg, #d4edda, #a8e6cf);
+        border-left-color: #28a745;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+      }
+
+      .info-box {
+        background: linear-gradient(135deg, #d1ecf1, #81ecec);
+        border-left-color: #17a2b8;
+        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.2);
+      }
+
+      .normal-form {
+        background: linear-gradient(135deg, #e8f6f3, #a8e6cf);
+        border-left-color: #27ae60;
+        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);
+      }
+
+      .normal-form h4 {
+        color: #27ae60;
+        margin-top: 0;
+        font-size: 1.4rem;
+      }
+
+      /* Tables */
+      .table-container {
+        overflow-x: auto;
+        margin: 1.5rem 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      th {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      /* Benefits Grid */
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .benefit-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+        border-top: 4px solid #3498db;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .benefit-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(to right, #3498db, #2980b9);
+      }
+
+      .benefit-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      .benefit-icon {
+        font-size: 3rem;
+        color: #3498db;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+      }
+
+      .benefit-card:hover .benefit-icon {
+        transform: scale(1.1);
+      }
+
+      /* Floating Action Button */
+      .fab {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+
+      .fab:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
+      }
+
+      .fab:active {
+        transform: scale(0.95);
+      }
+
+      /* Footer */
+      .footer {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .footer-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .footer-team {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .footer-team h3 {
+        margin-bottom: 1rem;
+        color: #ecf0f1;
+      }
+
+      .footer-members {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+
+      .footer-member {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.8rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .footer-member:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
         .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+          margin: 1rem;
+          border-radius: 10px;
         }
 
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 3px solid #e9ecef;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+        .tab-content {
+          padding: 1rem;
         }
 
-        .nav-tabs::-webkit-scrollbar {
-            display: none;
+        .section {
+          padding: 1.5rem;
+        }
+
+        .entity-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
         }
 
         .nav-tab {
-            flex: 1;
-            min-width: 200px;
-            padding: 1rem 1.5rem;
-            background: #f8f9fa;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #495057;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+          min-width: 150px;
+          padding: 0.8rem 1rem;
+          font-size: 0.9rem;
         }
 
-        .nav-tab:hover {
-            background: #e9ecef;
-            color: #3498db;
-        }
-
-        .nav-tab.active {
-            background: white;
-            color: #3498db;
-            border-bottom-color: #3498db;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            padding: 2rem;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Sections */
-        .section {
-            margin-bottom: 2rem;
-            padding: 2rem;
-            border-radius: 10px;
-            background: #f8f9fa;
-            border-left: 5px solid #3498db;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .section h2 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: clamp(1.5rem, 3vw, 2rem);
-        }
-
-        .section h3 {
-            color: #34495e;
-            margin: 1.5rem 0 1rem 0;
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-        }
-
-        /* Interactive Elements */
-        .interactive-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .interactive-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            border-color: #3498db;
-        }
-
-        .interactive-card.expanded {
-            border-color: #27ae60;
-            background: #f8fff8;
-        }
-
-        /* ERD Diagram */
-        .erd-container {
-            text-align: center;
-            margin: 2rem 0;
-            padding: 2rem;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .erd-placeholder {
-            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
-                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
-                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-            padding: 3rem;
-            border-radius: 10px;
-            border: 2px dashed #ccc;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Entity Analysis Grid */
-        .entity-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .entity-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-left: 4px solid #3498db;
-            transition: all 0.3s ease;
-        }
-
-        .entity-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .entity-card h4 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Tables */
-        .table-container {
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        th {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        /* Code Block */
-        .code-container {
-            position: relative;
-            margin: 1.5rem 0;
-        }
-
-        .code-header {
-            background: #2c3e50;
-            color: white;
-            padding: 1rem;
-            border-radius: 10px 10px 0 0;
-            display: flex;
-            justify-content: between;
-            align-items: center;
-        }
-
-        .code-title {
-            font-weight: 600;
-        }
-
-        .copy-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background: #2980b9;
-        }
-
-        .code-block {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 1.5rem;
-            border-radius: 0 0 10px 10px;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-            line-height: 1.6;
-            font-size: 0.9rem;
-        }
-
-        /* Progress Indicator */
         .progress-container {
-            display: flex;
-            justify-content: center;
-            margin: 2rem 0;
-            gap: 1rem;
+          gap: 0.5rem;
         }
 
         .progress-step {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #6c757d;
-            transition: all 0.3s ease;
+          width: 40px;
+          height: 40px;
+          font-size: 0.9rem;
         }
 
-        .progress-step.active {
-            background: #3498db;
-            color: white;
-            transform: scale(1.1);
+        .team-members {
+          grid-template-columns: 1fr;
+          gap: 0.8rem;
         }
 
-        .progress-step.completed {
-            background: #27ae60;
-            color: white;
+        .project-info {
+          flex-direction: column;
+          gap: 0.5rem;
         }
 
-        /* Highlight Boxes */
-        .highlight {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border-left: 4px solid #ffc107;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+        .benefits-grid {
+          grid-template-columns: 1fr;
         }
 
-        .success-box {
-            background: linear-gradient(135deg, #d4edda, #a8e6cf);
-            border-left-color: #28a745;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
-        }
-
-        .info-box {
-            background: linear-gradient(135deg, #d1ecf1, #81ecec);
-            border-left-color: #17a2b8;
-            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.2);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                margin: 1rem;
-                border-radius: 10px;
-            }
-
-            .tab-content {
-                padding: 1rem;
-            }
-
-            .section {
-                padding: 1.5rem;
-            }
-
-            .entity-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .nav-tab {
-                min-width: 150px;
-                padding: 0.8rem 1rem;
-                font-size: 0.9rem;
-            }
-
-            .progress-container {
-                gap: 0.5rem;
-            }
-
-            .progress-step {
-                width: 35px;
-                height: 35px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header {
-                padding: 1.5rem 1rem;
-            }
-
-            .nav-tab {
-                min-width: 120px;
-                padding: 0.7rem 0.8rem;
-                font-size: 0.8rem;
-            }
-
-            .section {
-                padding: 1rem;
-            }
-        }
-
-        /* Animation Classes */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .slide-up {
-            animation: slideUp 0.5s ease-in-out;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .bounce {
-            animation: bounce 0.6s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-
-        /* Floating Action Button */
         .fab {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(52, 152, 219, 0.4);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+          bottom: 1rem;
+          right: 1rem;
+          width: 50px;
+          height: 50px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header {
+          padding: 1.5rem 1rem;
         }
 
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(52, 152, 219, 0.6);
+        .nav-tab {
+          min-width: 120px;
+          padding: 0.7rem 0.8rem;
+          font-size: 0.8rem;
         }
 
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .section {
+          padding: 1rem;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .team-info {
+          padding: 1rem;
+          margin: 0.5rem;
         }
+
+        .progress-step {
+          width: 35px;
+          height: 35px;
+          font-size: 0.8rem;
+        }
+      }
+
+      /* Scroll Animations */
+      .fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .slide-up {
+        animation: slideUp 0.6s ease-in-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Loading States */
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Scroll Progress Bar */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: linear-gradient(to right, #3498db, #2980b9);
+        z-index: 1001;
+        transition: width 0.3s ease;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="scroll-progress"></div>
+
     <div class="header">
-        <h1><i class="fas fa-database"></i> Normalización de Bases de Datos</h1>
-        <p>Sistema Interactivo de Venta de Zapatos</p>
-        <div class="author-info">
-            <i class="fas fa-user"></i> Desarrollado por: <strong>Hernan Barrios y David Garcia</strong> | 
-            <i class="fas fa-calendar"></i> 21 de Agosto, 2025
+      <h1><i class="fas fa-database"></i> Normalización de Bases de Datos</h1>
+      <p>Sistema Interactivo de Venta de Zapatos</p>
+
+      <div class="team-info">
+        <div class="team-title">
+          <i class="fas fa-users"></i>
+          <span>Equipo de Desarrollo</span>
         </div>
+
+        <div class="team-members">
+          <div class="member-card">
+            <div class="member-name">
+              <i class="fas fa-user-graduate"></i>
+              <span>DAVID GARCIA</span>
+            </div>
+            <div class="member-role">Ingeniero de Software</div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-name">
+              <i class="fas fa-user-graduate"></i>
+              <span>HERNAN BARRIOS</span>
+            </div>
+            <div class="member-role">Ingeniero de Software</div>
+          </div>
+        </div>
+
+        <div class="project-info">
+          <div class="info-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>27 de Agosto, 2025</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Proyecto Académico</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-code"></i>
+            <span>Base de Datos</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="container">
-        <!-- Progress Indicator -->
-        <div class="progress-container">
-            <div class="progress-step active" data-step="1">1</div>
-            <div class="progress-step" data-step="2">2</div>
-            <div class="progress-step" data-step="3">3</div>
-            <div class="progress-step" data-step="4">4</div>
-            <div class="progress-step" data-step="5">5</div>
-            <div class="progress-step" data-step="6">6</div>
+      <!-- Progress Indicator -->
+      <div class="progress-container">
+        <div
+          class="progress-step active"
+          data-step="1"
+          onclick="showTab('intro')"
+        >
+          1
         </div>
-
-        <!-- Navigation Tabs -->
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('intro')">
-                <i class="fas fa-home"></i> Introducción
-            </button>
-            <button class="nav-tab" onclick="showTab('erd')">
-                <i class="fas fa-project-diagram"></i> Diagrama ERD
-            </button>
-            <button class="nav-tab" onclick="showTab('formas')">
-                <i class="fas fa-layer-group"></i> Formas Normales
-            </button>
-            <button class="nav-tab" onclick="showTab('beneficios')">
-                <i class="fas fa-check-circle"></i> Beneficios
-            </button>
-            <button class="nav-tab" onclick="showTab('codigo')">
-                <i class="fas fa-code"></i> Implementación
-            </button>
-            <button class="nav-tab" onclick="showTab('consultas')">
-                <i class="fas fa-search"></i> Consultas
-            </button>
+        <div class="progress-step" data-step="2" onclick="showTab('erd')">
+          2
         </div>
+        <div class="progress-step" data-step="3" onclick="showTab('formas')">
+          3
+        </div>
+        <div
+          class="progress-step"
+          data-step="4"
+          onclick="showTab('beneficios')"
+        >
+          4
+        </div>
+        <div class="progress-step" data-step="5" onclick="showTab('consultas')">
+          5
+        </div>
+      </div>
 
-        <!-- Tab Contents -->
-        <div id="intro" class="tab-content active">
-            <div class="section">
-                <h2><i class="fas fa-bullseye"></i> ¿Qué es la Normalización?</h2>
-                <p>La normalización es un proceso de diseño de bases de datos que organiza los datos para <strong>minimizar la redundancia</strong> y <strong>evitar anomalías</strong> de inserción, actualización y eliminación.</p>
-                
-                <div class="highlight">
-                    <h3><i class="fas fa-target"></i> Objetivos principales:</h3>
-                    <ul>
-                        <li><i class="fas fa-minus-circle"></i> Eliminar datos redundantes</li>
-                        <li><i class="fas fa-shield-alt"></i> Mantener la integridad de los datos</li>
-                        <li><i class="fas fa-tools"></i> Facilitar el mantenimiento</li>
-                        <li><i class="fas fa-compress-alt"></i> Optimizar el almacenamiento</li>
-                    </ul>
-                </div>
+      <!-- Navigation Tabs -->
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('intro')">
+          <i class="fas fa-home"></i> Introducción
+        </button>
+        <button class="nav-tab" onclick="showTab('erd')">
+          <i class="fas fa-project-diagram"></i> Diagrama ERD
+        </button>
+        <button class="nav-tab" onclick="showTab('formas')">
+          <i class="fas fa-layer-group"></i> Formas Normales
+        </button>
+        <button class="nav-tab" onclick="showTab('beneficios')">
+          <i class="fas fa-check-circle"></i> Beneficios
+        </button>
+        <button class="nav-tab" onclick="showTab('consultas')">
+          <i class="fas fa-search"></i> Consultas Ejemplo
+        </button>
+      </div>
 
-                <div class="interactive-card" onclick="toggleCard(this)">
-                    <h3><i class="fas fa-info-circle"></i> ¿Por qué es importante la normalización?</h3>
-                    <div class="card-content" style="display: none;">
-                        <p>Sin normalización, las bases de datos pueden sufrir de:</p>
-                        <ul>
-                            <li><strong>Redundancia:</strong> Información duplicada que consume espacio innecesario</li>
-                            <li><strong>Anomalías de inserción:</strong> Dificultad para agregar nuevos datos</li>
-                            <li><strong>Anomalías de actualización:</strong> Inconsistencias al modificar datos</li>
-                            <li><strong>Anomalías de eliminación:</strong> Pérdida no deseada de información</li>
-                        </ul>
-                    </div>
-                </div>
+      <!-- Tab Contents -->
+      <div id="intro" class="tab-content active">
+        <div class="section">
+          <h2><i class="fas fa-bullseye"></i> ¿Qué es la Normalización?</h2>
+          <p>
+            La normalización es un proceso sistemático de diseño de bases de
+            datos relacionales que organiza los datos para
+            <strong>minimizar la redundancia</strong> y
+            <strong>evitar anomalías</strong> de inserción, actualización y
+            eliminación.
+          </p>
+
+          <div class="highlight">
+            <h3><i class="fas fa-target"></i> Objetivos principales:</h3>
+            <ul>
+              <li>
+                <i class="fas fa-minus-circle"></i> Eliminar datos redundantes
+              </li>
+              <li>
+                <i class="fas fa-shield-alt"></i> Mantener la integridad de los
+                datos
+              </li>
+              <li><i class="fas fa-tools"></i> Facilitar el mantenimiento</li>
+              <li>
+                <i class="fas fa-compress-alt"></i> Optimizar el almacenamiento
+              </li>
+            </ul>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-info-circle"></i> ¿Por qué es importante la
+                normalización?
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
             </div>
+            <div class="card-content">
+              <p>
+                Sin normalización, las bases de datos pueden sufrir de problemas
+                graves:
+              </p>
+              <ul>
+                <li>
+                  <strong>Redundancia de datos:</strong> Información duplicada
+                  que consume espacio innecesario
+                </li>
+                <li>
+                  <strong>Anomalías de inserción:</strong> Dificultad para
+                  agregar nuevos datos de manera consistente
+                </li>
+                <li>
+                  <strong>Anomalías de actualización:</strong> Inconsistencias
+                  al modificar información existente
+                </li>
+                <li>
+                  <strong>Anomalías de eliminación:</strong> Pérdida accidental
+                  de información importante
+                </li>
+              </ul>
+              <div class="info-box" style="margin-top: 1rem">
+                <p>
+                  <strong>💡 Ejemplo práctico:</strong> En un sistema no
+                  normalizado, si cambiamos el nombre de una categoría de
+                  zapatos, tendríamos que actualizar múltiples registros. Con
+                  normalización, solo actualizamos un registro en la tabla de
+                  categorías.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-graduation-cap"></i> Importancia para
+                Ingenieros de Software
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <p>
+                Como ingenieros de software, la normalización es fundamental
+                porque:
+              </p>
+              <ul>
+                <li>
+                  <strong>Escalabilidad:</strong> Sistemas que crecen de manera
+                  organizada
+                </li>
+                <li>
+                  <strong>Mantenibilidad:</strong> Código y datos más fáciles de
+                  mantener
+                </li>
+                <li>
+                  <strong>Rendimiento:</strong> Consultas más eficientes y
+                  menores tiempos de respuesta
+                </li>
+                <li>
+                  <strong>Integridad:</strong> Datos consistentes y confiables
+                </li>
+                <li>
+                  <strong>Reutilización:</strong> Estructuras que pueden
+                  adaptarse a nuevos requerimientos
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div id="erd" class="tab-content">
-            <div class="section">
-                <h2><i class="fas fa-sitemap"></i> Diagrama ERD - Sistema de Venta de Zapatos</h2>
-                
-                <div class="erd-container">
-                    <div class="erd-display">
-                        <h3>Diagrama ERD del Sistema</h3>
-                        <img src="./driagrama.jpg" alt="Diagrama ERD del Sistema de Venta de Zapatos" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 1rem 0;">
-                    </div>
+      <div id="erd" class="tab-content">
+        <div class="section">
+          <h2>
+            <i class="fas fa-sitemap"></i> Diagrama ERD - Sistema de Venta de
+            Zapatos
+          </h2>
+
+          <div class="erd-container">
+            <img
+              src="data:image/png;base64,![image3](image3)"
+              alt="Diagrama ERD del Sistema de Venta de Zapatos"
+              style="max-width: 100%; height: auto"
+            />
+            <p>
+              <em
+                >Diagrama Entidad-Relación del sistema normalizado de venta de
+                zapatos</em
+              >
+            </p>
+          </div>
+
+          <div class="info-box">
+            <h3><i class="fas fa-database"></i> Análisis del Sistema</h3>
+            <p>
+              El diagrama presenta un sistema completamente normalizado con
+              <strong>9 entidades principales</strong> que se relacionan de
+              manera eficiente, eliminando redundancias y manteniendo la
+              integridad referencial.
+            </p>
+          </div>
+
+          <div class="entity-grid">
+            <div class="entity-card">
+              <h4><i class="fas fa-shoe-prints"></i> producto</h4>
+              <ul>
+                <li><strong>id_producto:</strong> INT (Clave Primaria)</li>
+                <li><strong>modelo:</strong> VARCHAR(100)</li>
+                <li><strong>talla:</strong> VARCHAR(10)</li>
+                <li><strong>color:</strong> VARCHAR(50)</li>
+                <li><strong>precio:</strong> DECIMAL(10,2)</li>
+                <li><strong>id_categoria:</strong> INT (Clave Foránea)</li>
+              </ul>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-tags"></i> categoria_producto</h4>
+              <ul>
+                <li><strong>id_categoria:</strong> INT (Clave Primaria)</li>
+                <li><strong>nombre:</strong> VARCHAR(50)</li>
+                <li><strong>descripcion:</strong> VARCHAR(150)</li>
+              </ul>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-industry"></i> proveedor</h4>
+              <ul>
+                <li><strong>id_proveedor:</strong> INT (Clave Primaria)</li>
+                <li><strong>nombre:</strong> VARCHAR(100)</li>
+                <li><strong>telefono:</strong> VARCHAR(20)</li>
+                <li><strong>direccion:</strong> VARCHAR(150)</li>
+                <li><strong>email:</strong> VARCHAR(100)</li>
+              </ul>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-link"></i> proveedor_producto</h4>
+              <ul>
+                <li><strong>id_proveedor:</strong> INT (Clave Foránea)</li>
+                <li><strong>id_producto:</strong> INT (Clave Foránea)</li>
+              </ul>
+              <p>
+                <em
+                  >Tabla de relación muchos a muchos entre proveedores y
+                  productos</em
+                >
+              </p>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-file-invoice"></i> factura</h4>
+              <ul>
+                <li><strong>id_factura:</strong> INT (Clave Primaria)</li>
+                <li><strong>fecha:</strong> DATE</li>
+                <li><strong>id_cliente:</strong> INT (Clave Foránea)</li>
+                <li><strong>id_empleado:</strong> INT (Clave Foránea)</li>
+                <li><strong>id_metodoPago:</strong> INT (Clave Foránea)</li>
+                <li><strong>total:</strong> DECIMAL(10,2)</li>
+              </ul>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-list"></i> factura_producto</h4>
+              <ul>
+                <li><strong>id_factura:</strong> INT (Clave Foránea)</li>
+                <li><strong>id_producto:</strong> INT (Clave Foránea)</li>
+                <li><strong>cantidad:</strong> INT</li>
+                <li><strong>precio_unitario:</strong> DECIMAL(10,2)</li>
+              </ul>
+              <p>
+                <em
+                  >Tabla de detalle que registra los productos vendidos en cada
+                  factura</em
+                >
+              </p>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-user"></i> cliente</h4>
+              <ul>
+                <li><strong>id_cliente:</strong> INT (Clave Primaria)</li>
+                <li><strong>nombre:</strong> VARCHAR(100)</li>
+                <li><strong>telefono:</strong> VARCHAR(20)</li>
+                <li><strong>direccion:</strong> VARCHAR(150)</li>
+                <li><strong>email:</strong> VARCHAR(100)</li>
+              </ul>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-user-tie"></i> empleado</h4>
+              <ul>
+                <li><strong>id_empleado:</strong> INT (Clave Primaria)</li>
+                <li><strong>nombre:</strong> VARCHAR(100)</li>
+                <li><strong>cargo:</strong> VARCHAR(50)</li>
+              </ul>
+            </div>
+
+            <div class="entity-card">
+              <h4><i class="fas fa-credit-card"></i> metodo_pago</h4>
+              <ul>
+                <li><strong>id_metodoPago:</strong> INT (Clave Primaria)</li>
+                <li><strong>tipo:</strong> VARCHAR(50)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="success-box">
+            <h3><i class="fas fa-link"></i> Relaciones del Sistema</h3>
+            <ul>
+              <li>
+                <strong>producto → categoria_producto:</strong> Muchos a Uno
+                (Cada producto pertenece a una categoría)
+              </li>
+              <li>
+                <strong>proveedor ↔ producto:</strong> Muchos a Muchos (Un
+                proveedor puede suministrar varios productos, un producto puede
+                tener varios proveedores)
+              </li>
+              <li>
+                <strong>factura → cliente:</strong> Muchos a Uno (Cada factura
+                pertenece a un cliente específico)
+              </li>
+              <li>
+                <strong>factura → empleado:</strong> Muchos a Uno (Cada factura
+                es procesada por un empleado)
+              </li>
+              <li>
+                <strong>factura → metodo_pago:</strong> Muchos a Uno (Cada
+                factura tiene un método de pago)
+              </li>
+              <li>
+                <strong>factura ↔ producto:</strong> Muchos a Muchos (Una
+                factura puede tener varios productos, un producto puede estar en
+                varias facturas)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="formas" class="tab-content">
+        <div class="section">
+          <h2><i class="fas fa-layer-group"></i> Formas Normales Aplicadas</h2>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-list-ol"></i> 1️⃣ Primera Forma Normal (1FN)
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <div class="normal-form">
+                <h4>Regla: Valores Atómicos</h4>
+                <p>
+                  <strong
+                    >Cada columna debe contener valores atómicos (indivisibles)
+                    y cada registro debe ser único.</strong
+                  >
+                </p>
+
+                <h5>❌ Ejemplo NO normalizado:</h5>
+                <div class="table-container">
+                  <table>
+                    <tr>
+                      <th>ID_Cliente</th>
+                      <th>Nombre</th>
+                      <th>Teléfonos</th>
+                      <th>Productos_Comprados</th>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Juan Pérez</td>
+                      <td>123-456, 789-012</td>
+                      <td>Nike Air Max, Adidas Boost</td>
+                    </tr>
+                  </table>
                 </div>
 
-                <div class="info-box">
-                    <h3><i class="fas fa-database"></i> Entidades del Sistema:</h3>
-                    <p>El diagrama muestra un sistema normalizado con 8 entidades principales que se relacionan de manera eficiente.</p>
-                </div>
-
-                <div class="entity-grid">
-                    <div class="entity-card">
-                        <h4><i class="fas fa-shoe-prints"></i> Zapato</h4>
-                        <ul>
-                            <li><strong>ID_Zapato:</strong> Clave primaria (INT)</li>
-                            <li><strong>Nombre:</strong> VARCHAR(100)</li>
-                            <li><strong>Talla:</strong> VARCHAR(10)</li>
-                            <li><strong>Color:</strong> VARCHAR(30)</li>
-                            <li><strong>PrecioVenta:</strong> DECIMAL(10,2)</li>
-                            <li><strong>Stock:</strong> INT</li>
-                            <li><strong>ID_Categoria:</strong> Clave foránea</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entity-card">
-                        <h4><i class="fas fa-tags"></i> Categoría_zapato</h4>
-                        <ul>
-                            <li><strong>ID_Categoria:</strong> Clave primaria (INT)</li>
-                            <li><strong>Nombre:</strong> VARCHAR(50)</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entity-card">
-                        <h4><i class="fas fa-user"></i> Cliente</h4>
-                        <ul>
-                            <li><strong>ID_Cliente:</strong> Clave primaria (INT)</li>
-                            <li><strong>Nombre:</strong> VARCHAR(100)</li>
-                            <li><strong>Telefono:</strong> VARCHAR(20)</li>
-                            <li><strong>Direccion:</strong> VARCHAR(150)</li>
-                            <li><strong>Email:</strong> VARCHAR(100)</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entity-card">
-                        <h4><i class="fas fa-user-tie"></i> Empleado</h4>
-                        <ul>
-                            <li><strong>ID_Empleado:</strong> Clave primaria (INT)</li>
-                            <li><strong>Nombre:</strong> VARCHAR(100)</li>
-                            <li><strong>Cargo:</strong> VARCHAR(50)</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entity-card">
-                        <h4><i class="fas fa-building"></i> Proveedor</h4>
-                        <ul>
-                            <li><strong>ID_Proveedor:</strong> Clave primaria (INT)</li>
-                            <li><strong>Nombre:</strong> VARCHAR(100)</li>
-                            <li><strong>Telefono:</strong> VARCHAR(20)</li>
-                            <li><strong>Direccion:</strong> VARCHAR(150)</li>
-                            <li><strong>Email:</strong> VARCHAR(100)</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entity-card">
-                        <h4><i class="fas fa-receipt"></i> Factura</h4>
-                        <ul>
-                            <li><strong>ID_Factura:</strong> Clave primaria (INT)</li>
-                            <li><strong>Fecha:</strong> DATE</li>
-                            <li><strong>Total:</strong> DECIMAL(12,2)</li>
-                            <li><strong>IVA:</strong> DECIMAL(12,2)</li>
-                            <li><strong>Descuento:</strong> DECIMAL(12,2)</li>
-                            <li><strong>Estado:</strong> VARCHAR(20)</li>
-                            <li><strong>Claves foráneas:</strong> Cliente, Empleado, Proveedor, Método Pago</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entity-card">
-                        <h4><i class="fas fa-list"></i> Detalle_factura</h4>
-                        <ul>
-                            <li><strong>ID_Detalle:</strong> Clave primaria (INT)</li>
-                            <li><strong>Cantidad:</strong> INT</li>
-                            <li><strong>PrecioUnitario:</strong> DECIMAL(10,2)</li>
-                            <li><strong>Subtotal:</strong> DECIMAL(12,2)</li>
-                            <li><strong>ID_Factura:</strong> Clave foránea</li>
-                            <li><strong>ID_Zapato:</strong> Clave foránea</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entity-card">
-                        <h4><i class="fas fa-credit-card"></i> Método_pago</h4>
-                        <ul>
-                            <li><strong>ID_Pago:</strong> Clave primaria (INT)</li>
-                            <li><strong>Nombre:</strong> VARCHAR(50)</li>
-                        </ul>
-                    </div>
+                <h5>✅ Ejemplo en 1FN:</h5>
+                <div class="table-container">
+                  <table>
+                    <tr>
+                      <th>id_cliente</th>
+                      <th>nombre</th>
+                      <th>telefono</th>
+                      <th>email</th>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Juan Pérez</td>
+                      <td>123-456-7890</td>
+                      <td>juan@email.com</td>
+                    </tr>
+                  </table>
                 </div>
 
                 <div class="success-box">
-                    <h3><i class="fas fa-link"></i> Relaciones Principales:</h3>
-                    <ul>
-                        <li><strong>Zapato → Categoría:</strong> Muchos a Uno</li>
-                        <li><strong>Factura → Cliente/Empleado/Proveedor:</strong> Muchos a Uno</li>
-                        <li><strong>Detalle → Factura/Zapato:</strong> Muchos a Uno</li>
-                    </ul>
+                  <h5>✅ Cumplimiento en nuestro sistema:</h5>
+                  <ul>
+                    <li>
+                      Todos los campos contienen valores únicos e indivisibles
+                    </li>
+                    <li>No hay grupos repetitivos de datos</li>
+                    <li>Cada tabla tiene una clave primaria única</li>
+                    <li>
+                      Los productos se relacionan con clientes a través de
+                      facturas separadas
+                    </li>
+                  </ul>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
 
-        <div id="formas" class="tab-content">
-            <div class="section">
-                <h2><i class="fas fa-layer-group"></i> Formas Normales Aplicadas</h2>
-                
-                <div class="interactive-card" onclick="toggleCard(this)">
-                    <h3><i class="fas fa-list-ol"></i> 1️⃣ Primera Forma Normal (1FN)</h3>
-                    <div class="card-content" style="display: none;">
-                        <p><strong>Regla:</strong> Cada columna debe contener valores atómicos (indivisibles) y cada registro debe ser único.</p>
-                        
-                        <h4>❌ Tabla NO normalizada:</h4>
-                        <div class="table-container">
-                            <table>
-                                <tr>
-                                    <th>ID_Cliente</th>
-                                    <th>Nombre</th>
-                                    <th>Teléfonos</th>
-                                    <th>Zapatos_Comprados</th>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Juan Pérez</td>
-                                    <td>123-456, 789-012</td>
-                                    <td>Nike Air, Adidas Run</td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <h4>✅ Tabla en 1FN:</h4>
-                        <div class="table-container">
-                            <table>
-                                <tr>
-                                    <th>ID_Cliente</th>
-                                    <th>Nombre</th>
-                                    <th>Teléfono</th>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Juan Pérez</td>
-                                    <td>123-456-7890</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-card" onclick="toggleCard(this)">
-                    <h3><i class="fas fa-sitemap"></i> 2️⃣ Segunda Forma Normal (2FN)</h3>
-                    <div class="card-content" style="display: none;">
-                        <p><strong>Regla:</strong> Debe estar en 1FN y todos los atributos no clave deben depender completamente de la clave primaria.</p>
-                        
-                        <h4>✅ Ejemplo: Tabla detalle_factura</h4>
-                        <div class="table-container">
-                            <table>
-                                <tr>
-                                    <th>ID_Detalle (PK)</th>
-                                    <th>ID_Factura (FK)</th>
-                                    <th>ID_Zapato (FK)</th>
-                                    <th>Cantidad</th>
-                                    <th>PrecioUnitario</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>100</td>
-                                    <td>50</td>
-                                    <td>2</td>
-                                    <td>89.99</td>
-                                    <td>179.98</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>100</td>
-                                    <td>51</td>
-                                    <td>1</td>
-                                    <td>120.00</td>
-                                    <td>120.00</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="interactive-card" onclick="toggleCard(this)">
-                    <h3><i class="fas fa-network-wired"></i> 3️⃣ Tercera Forma Normal (3FN)</h3>
-                    <div class="card-content" style="display: none;">
-                        <p><strong>Regla:</strong> Debe estar en 2FN y no debe haber dependencias transitivas.</p>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-                            <div>
-                                <h5>Tabla Zapato:</h5>
-                                <div class="table-container">
-                                    <table>
-                                        <tr>
-                                            <th>ID_Zapato</th>
-                                            <th>Nombre</th>
-                                            <th>ID_Categoria</th>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Nike Air Max</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Clarks Oxford</td>
-                                            <td>2</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <h5>Tabla Categoría:</h5>
-                                <div class="table-container">
-                                    <table>
-                                        <tr>
-                                            <th>ID_Categoria</th>
-                                            <th>Nombre</th>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Deportivos</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Formales</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-sitemap"></i> 2️⃣ Segunda Forma Normal (2FN)
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
             </div>
-        </div>
+            <div class="card-content">
+              <div class="normal-form">
+                <h4>Regla: Dependencia Completa</h4>
+                <p>
+                  <strong
+                    >Debe estar en 1FN y todos los atributos no clave deben
+                    depender completamente de la clave primaria.</strong
+                  >
+                </p>
 
-        <div id="beneficios" class="tab-content">
-            <div class="section">
-                <h2><i class="fas fa-check-circle"></i> Beneficios del Diseño Normalizado</h2>
-                
-                <div class="entity-grid">
-                    <div class="interactive-card bounce">
-                        <h3><i class="fas fa-minus-circle text-success"></i> Eliminación de Redundancia</h3>
-                        <p>Los datos del cliente se almacenan una sola vez en la tabla cliente, evitando duplicación innecesaria.</p>
-                    </div>
-                    
-                    <div class="interactive-card bounce" style="animation-delay: 0.1s;">
-                        <h3><i class="fas fa-shield-alt text-primary"></i> Integridad Referencial</h3>
-                        <p>Las claves foráneas mantienen la consistencia y validez de las relaciones entre tablas.</p>
-                    </div>
-                    
-                    <div class="interactive-card bounce" style="animation-delay: 0.2s;">
-                        <h3><i class="fas fa-tools text-warning"></i> Facilidad de Mantenimiento</h3>
-                        <p>Cambiar el precio de un zapato solo requiere una actualización en una ubicación.</p>
-                    </div>
-                    
-                    <div class="interactive-card bounce" style="animation-delay: 0.3s;">
-                        <h3><i class="fas fa-expand-arrows-alt text-info"></i> Escalabilidad</h3>
-                        <p>Agregar nuevas categorías o métodos de pago es sencillo y no afecta datos existentes.</p>
-                    </div>
-                    
-                    <div class="interactive-card bounce" style="animation-delay: 0.4s;">
-                        <h3><i class="fas fa-balance-scale text-success"></i> Consistencia</h3>
-                        <p>No hay información contradictoria almacenada en diferentes lugares de la base de datos.</p>
-                    </div>
-                    
-                    <div class="interactive-card bounce" style="animation-delay: 0.5s;">
-                        <h3><i class="fas fa-puzzle-piece text-primary"></i> Flexibilidad</h3>
-                        <p>Las consultas pueden combinar datos de múltiples tablas según las necesidades específicas.</p>
-                    </div>
+                <h5>✅ Ejemplo: Tabla factura_producto</h5>
+                <div class="table-container">
+                  <table>
+                    <tr>
+                      <th>id_factura (PK)</th>
+                      <th>id_producto (PK)</th>
+                      <th>cantidad</th>
+                      <th>precio_unitario</th>
+                    </tr>
+                    <tr>
+                      <td>100</td>
+                      <td>25</td>
+                      <td>2</td>
+                      <td>89.99</td>
+                    </tr>
+                    <tr>
+                      <td>100</td>
+                      <td>30</td>
+                      <td>1</td>
+                      <td>129.99</td>
+                    </tr>
+                  </table>
                 </div>
 
-                <div class="highlight">
-                    <h3><i class="fas fa-lightbulb"></i> Impacto en el Rendimiento:</h3>
-                    <ul>
-                        <li><strong>Espacio de almacenamiento:</strong> Reducción significativa de datos duplicados</li>
-                        <li><strong>Velocidad de escritura:</strong> Menos datos para insertar y actualizar</li>
-                        <li><strong>Integridad:</strong> Menor riesgo de inconsistencias</li>
-                        <li><strong>Mantenimiento:</strong> Cambios centralizados y controlados</li>
-                    </ul>
+                <div class="success-box">
+                  <h5>✅ Análisis de dependencias:</h5>
+                  <ul>
+                    <li>
+                      <strong>cantidad:</strong> Depende de la combinación
+                      (factura + producto)
+                    </li>
+                    <li>
+                      <strong>precio_unitario:</strong> Depende de la
+                      combinación (factura + producto)
+                    </li>
+                    <li>
+                      No hay dependencias parciales de la clave primaria
+                      compuesta
+                    </li>
+                    <li>Cada atributo necesita ambas claves para ser único</li>
+                  </ul>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
 
-        <div id="codigo" class="tab-content">
-            <div class="section">
-                <h2><i class="fas fa-code"></i> Implementación SQL</h2>
-                
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title"><i class="fas fa-database"></i> Creación de la Base de Datos</span>
-                        <button class="copy-btn" onclick="copyCode('db-creation')">
-                            <i class="fas fa-copy"></i> Copiar
-                        </button>
-                    </div>
-                    <div class="code-block" id="db-creation">-- Crear base de datos
-CREATE DATABASE VentaZapatos;
-USE VentaZapatos;
-
--- Tabla Categoría (debe crearse primero por las FK)
-CREATE TABLE categoria_zapato (
-    ID_Categoria INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(50) NOT NULL UNIQUE
-);
-
--- Tabla Método de Pago
-CREATE TABLE metodo_pago (
-    ID_Pago INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(50) NOT NULL
-);
-
--- Tabla Cliente
-CREATE TABLE cliente (
-    ID_Cliente INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(100) NOT NULL,
-    Telefono VARCHAR(20),
-    Direccion VARCHAR(150),
-    Email VARCHAR(100) UNIQUE
-);
-
--- Tabla Empleado
-CREATE TABLE empleado (
-    ID_Empleado INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(100) NOT NULL,
-    Cargo VARCHAR(50)
-);
-
--- Tabla Proveedor
-CREATE TABLE proveedor (
-    ID_Proveedor INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(100) NOT NULL,
-    Telefono VARCHAR(20),
-    Direccion VARCHAR(150),
-    Email VARCHAR(100)
-);</div>
-                </div>
-
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title"><i class="fas fa-table"></i> Tablas Principales</span>
-                        <button class="copy-btn" onclick="copyCode('main-tables')">
-                            <i class="fas fa-copy"></i> Copiar
-                        </button>
-                    </div>
-                    <div class="code-block" id="main-tables">-- Tabla Zapato
-CREATE TABLE zapato (
-    ID_Zapato INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(100) NOT NULL,
-    Talla VARCHAR(10),
-    Color VARCHAR(30),
-    PrecioVenta DECIMAL(10,2) NOT NULL,
-    Stock INT DEFAULT 0,
-    ID_Categoria INT,
-    FOREIGN KEY (ID_Categoria) REFERENCES categoria_zapato(ID_Categoria)
-);
-
--- Tabla Factura
-CREATE TABLE factura (
-    ID_Factura INT PRIMARY KEY AUTO_INCREMENT,
-    Fecha DATE NOT NULL,
-    Total DECIMAL(12,2),
-    IVA DECIMAL(12,2),
-    Descuento DECIMAL(12,2) DEFAULT 0,
-    Estado VARCHAR(20) DEFAULT 'Pendiente',
-    ID_Proveedor INT,
-    ID_Cliente INT,
-    ID_Empleado INT,
-    ID_Pago INT,
-    FOREIGN KEY (ID_Cliente) REFERENCES cliente(ID_Cliente),
-    FOREIGN KEY (ID_Empleado) REFERENCES empleado(ID_Empleado),
-    FOREIGN KEY (ID_Proveedor) REFERENCES proveedor(ID_Proveedor),
-    FOREIGN KEY (ID_Pago) REFERENCES metodo_pago(ID_Pago)
-);
-
--- Tabla Detalle Factura
-CREATE TABLE detalle_factura (
-    ID_Detalle INT PRIMARY KEY AUTO_INCREMENT,
-    Cantidad INT NOT NULL,
-    PrecioUnitario DECIMAL(10,2) NOT NULL,
-    Subtotal DECIMAL(12,2) NOT NULL,
-    ID_Factura INT,
-    ID_Zapato INT,
-    FOREIGN KEY (ID_Factura) REFERENCES factura(ID_Factura),
-    FOREIGN KEY (ID_Zapato) REFERENCES zapato(ID_Zapato)
-);</div>
-                </div>
-
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-title"><i class="fas fa-plus"></i> Datos de Ejemplo</span>
-                        <button class="copy-btn" onclick="copyCode('sample-data')">
-                            <i class="fas fa-copy"></i> Copiar
-                        </button>
-                    </div>
-                    <div class="code-block" id="sample-data">-- Insertar datos de ejemplo
-INSERT INTO categoria_zapato (Nombre) VALUES 
-('Deportivos'), ('Formales'), ('Casuales'), ('Botas');
-
-INSERT INTO metodo_pago (Nombre) VALUES 
-('Efectivo'), ('Tarjeta Crédito'), ('Tarjeta Débito'), ('Transferencia');
-
-INSERT INTO cliente (Nombre, Telefono, Email) VALUES 
-('Juan Pérez', '123-456-7890', 'juan@email.com'),
-('María García', '987-654-3210', 'maria@email.com'),
-('Carlos López', '555-123-4567', 'carlos@email.com');
-
-INSERT INTO empleado (Nombre, Cargo) VALUES 
-('Ana Martín', 'Vendedora'),
-('Luis Rodríguez', 'Supervisor'),
-('Carmen Silva', 'Cajera');
-
-INSERT INTO zapato (Nombre, Talla, Color, PrecioVenta, Stock, ID_Categoria) VALUES 
-('Nike Air Max', '42', 'Negro', 129.99, 15, 1),
-('Adidas Ultraboost', '41', 'Blanco', 159.99, 8, 1),
-('Clarks Desert Boot', '43', 'Marrón', 89.99, 12, 2),
-('Converse All Star', '40', 'Rojo', 65.99, 20, 3);</div>
-                </div>
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-network-wired"></i> 3️⃣ Tercera Forma Normal
+                (3FN)
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
             </div>
-        </div>
+            <div class="card-content">
+              <div class="normal-form">
+                <h4>Regla: Sin Dependencias Transitivas</h4>
+                <p>
+                  <strong
+                    >Debe estar en 2FN y no debe haber dependencias transitivas
+                    (atributos que dependan de otros atributos no
+                    clave).</strong
+                  >
+                </p>
 
-        <div id="consultas" class="tab-content">
-            <div class="section">
-                <h2><i class="fas fa-search"></i> Consultas de Análisis</h2>
-                
-                <div class="interactive-card" onclick="toggleCard(this)">
-                    <h3><i class="fas fa-chart-bar"></i> Consultas Básicas</h3>
-                    <div class="card-content" style="display: none;">
-                        <div class="code-container">
-                            <div class="code-header">
-                                <span class="code-title">Zapatos con su categoría</span>
-                                <button class="copy-btn" onclick="copyCode('basic-query1')">Copiar</button>
-                            </div>
-                            <div class="code-block" id="basic-query1">SELECT z.Nombre as Zapato, z.Talla, z.Color, 
-       c.Nombre as Categoria, z.PrecioVenta
-FROM zapato z
-JOIN categoria_zapato c ON z.ID_Categoria = c.ID_Categoria
-ORDER BY c.Nombre, z.PrecioVenta;</div>
-                        </div>
-
-                        <div class="code-container">
-                            <div class="code-header">
-                                <span class="code-title">Información completa de ventas</span>
-                                <button class="copy-btn" onclick="copyCode('basic-query2')">Copiar</button>
-                            </div>
-                            <div class="code-block" id="basic-query2">SELECT f.ID_Factura, f.Fecha, cl.Nombre as Cliente, 
-       e.Nombre as Empleado, z.Nombre as Zapato,
-       df.Cantidad, df.PrecioUnitario, df.Subtotal
-FROM factura f
-JOIN cliente cl ON f.ID_Cliente = cl.ID_Cliente
-JOIN empleado e ON f.ID_Empleado = e.ID_Empleado
-JOIN detalle_factura df ON f.ID_Factura = df.ID_Factura
-JOIN zapato z ON df.ID_Zapato = z.ID_Zapato
-ORDER BY f.Fecha DESC;</div>
-                        </div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 1rem;
+                    margin: 1rem 0;
+                  "
+                >
+                  <div>
+                    <h5>Tabla producto:</h5>
+                    <div class="table-container">
+                      <table>
+                        <tr>
+                          <th>id_producto</th>
+                          <th>modelo</th>
+                          <th>id_categoria</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>Nike Air Max</td>
+                          <td>1</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>Adidas Boost</td>
+                          <td>1</td>
+                        </tr>
+                      </table>
                     </div>
+                  </div>
+
+                  <div>
+                    <h5>Tabla categoria_producto:</h5>
+                    <div class="table-container">
+                      <table>
+                        <tr>
+                          <th>id_categoria</th>
+                          <th>nombre</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>Deportivos</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>Formales</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="interactive-card" onclick="toggleCard(this)">
-                    <h3><i class="fas fa-analytics"></i> Consultas de Análisis Avanzado</h3>
-                    <div class="card-content" style="display: none;">
-                        <div class="code-container">
-                            <div class="code-header">
-                                <span class="code-title">Zapatos más vendidos</span>
-                                <button class="copy-btn" onclick="copyCode('advanced-query1')">Copiar</button>
-                            </div>
-                            <div class="code-block" id="advanced-query1">SELECT z.Nombre, z.Color, z.Talla,
-       SUM(df.Cantidad) as Total_Vendido,
-       SUM(df.Subtotal) as Ingresos_Generados,
-       AVG(df.PrecioUnitario) as Precio_Promedio
-FROM zapato z
-JOIN detalle_factura df ON z.ID_Zapato = df.ID_Zapato
-GROUP BY z.ID_Zapato, z.Nombre, z.Color, z.Talla
-ORDER BY Total_Vendido DESC
-LIMIT 10;</div>
-                        </div>
-
-                        <div class="code-container">
-                            <div class="code-header">
-                                <span class="code-title">Análisis por categoría</span>
-                                <button class="copy-btn" onclick="copyCode('advanced-query2')">Copiar</button>
-                            </div>
-                            <div class="code-block" id="advanced-query2">SELECT c.Nombre as Categoria, 
-       COUNT(DISTINCT z.ID_Zapato) as Productos_Diferentes,
-       COUNT(df.ID_Detalle) as Ventas_Totales,
-       SUM(df.Cantidad) as Unidades_Vendidas,
-       SUM(df.Subtotal) as Ingresos_Total,
-       AVG(df.Subtotal) as Venta_Promedio
-FROM categoria_zapato c
-JOIN zapato z ON c.ID_Categoria = z.ID_Categoria
-JOIN detalle_factura df ON z.ID_Zapato = df.ID_Zapato
-GROUP BY c.ID_Categoria, c.Nombre
-ORDER BY Ingresos_Total DESC;</div>
-                        </div>
-
-                        <div class="code-container">
-                            <div class="code-header">
-                                <span class="code-title">Clientes más frecuentes</span>
-                                <button class="copy-btn" onclick="copyCode('advanced-query3')">Copiar</button>
-                            </div>
-                            <div class="code-block" id="advanced-query3">SELECT cl.Nombre, cl.Email,
-       COUNT(f.ID_Factura) as Num_Compras,
-       SUM(f.Total) as Gasto_Total,
-       AVG(f.Total) as Compra_Promedio,
-       MAX(f.Fecha) as Ultima_Compra
-FROM cliente cl
-JOIN factura f ON cl.ID_Cliente = f.ID_Cliente
-GROUP BY cl.ID_Cliente, cl.Nombre, cl.Email
-HAVING Num_Compras > 1
-ORDER BY Gasto_Total DESC;</div>
-                        </div>
-                    </div>
+                <div class="success-box">
+                  <h5>✅ Eliminación de dependencias transitivas:</h5>
+                  <ul>
+                    <li>
+                      La información de categoría está separada en su propia
+                      tabla
+                    </li>
+                    <li>Los productos solo referencian el ID de categoría</li>
+                    <li>
+                      No hay dependencia directa entre modelo y nombre de
+                      categoría
+                    </li>
+                    <li>
+                      Cambios en categorías no afectan la tabla de productos
+                    </li>
+                  </ul>
                 </div>
-
-                <div class="interactive-card" onclick="toggleCard(this)">
-                    <h3><i class="fas fa-calendar-alt"></i> Consultas de Reportes</h3>
-                    <div class="card-content" style="display: none;">
-                        <div class="code-container">
-                            <div class="code-header">
-                                <span class="code-title">Ventas por período</span>
-                                <button class="copy-btn" onclick="copyCode('report-query1')">Copiar</button>
-                            </div>
-                            <div class="code-block" id="report-query1">SELECT DATE_FORMAT(f.Fecha, '%Y-%m') as Mes,
-       COUNT(f.ID_Factura) as Facturas_Emitidas,
-       SUM(f.Total) as Ingresos_Mes,
-       AVG(f.Total) as Venta_Promedio_Mes
-FROM factura f
-WHERE f.Estado = 'Completada'
-GROUP BY DATE_FORMAT(f.Fecha, '%Y-%m')
-ORDER BY Mes DESC;</div>
-                        </div>
-
-                        <div class="code-container">
-                            <div class="code-header">
-                                <span class="code-title">Inventario actual</span>
-                                <button class="copy-btn" onclick="copyCode('report-query2')">Copiar</button>
-                            </div>
-                            <div class="code-block" id="report-query2">SELECT z.Nombre, z.Talla, z.Color,
-       c.Nombre as Categoria,
-       z.Stock as Stock_Actual,
-       z.PrecioVenta,
-       (z.Stock * z.PrecioVenta) as Valor_Inventario,
-       CASE 
-           WHEN z.Stock < 5 THEN 'Stock Bajo'
-           WHEN z.Stock < 10 THEN 'Stock Medio'
-           ELSE 'Stock Alto'
-       END as Estado_Stock
-FROM zapato z
-JOIN categoria_zapato c ON z.ID_Categoria = c.ID_Categoria
-ORDER BY z.Stock ASC, c.Nombre;</div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="info-box">
+            <h3>
+              <i class="fas fa-check-circle"></i> Verificación del Sistema
+              Completo
+            </h3>
+            <p>
+              Nuestro sistema de venta de zapatos cumple con las tres primeras
+              formas normales:
+            </p>
+            <ul>
+              <li>
+                <strong>1FN:</strong> Todos los valores son atómicos y únicos
+              </li>
+              <li>
+                <strong>2FN:</strong> No hay dependencias parciales de claves
+                compuestas
+              </li>
+              <li>
+                <strong>3FN:</strong> No existen dependencias transitivas entre
+                atributos
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
+
+      <div id="beneficios" class="tab-content">
+        <div class="section">
+          <h2>
+            <i class="fas fa-check-circle"></i> Beneficios del Diseño
+            Normalizado
+          </h2>
+
+          <div class="benefits-grid">
+            <div class="benefit-card">
+              <div class="benefit-icon">🚫</div>
+              <h3>Eliminación de Redundancia</h3>
+              <p>
+                Los datos se almacenan una sola vez, evitando duplicación
+                innecesaria y ahorrando espacio de almacenamiento.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">🛡️</div>
+              <h3>Integridad de Datos</h3>
+              <p>
+                Las claves foráneas mantienen la consistencia y validez de las
+                relaciones entre tablas automáticamente.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">🔧</div>
+              <h3>Facilidad de Mantenimiento</h3>
+              <p>
+                Actualizar información requiere cambios en una sola ubicación,
+                reduciendo errores y tiempo de desarrollo.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">📈</div>
+              <h3>Escalabilidad</h3>
+              <p>
+                Agregar nuevas funcionalidades es más sencillo con un diseño
+                bien estructurado y modular.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">⚡</div>
+              <h3>Mejor Rendimiento</h3>
+              <p>
+                Consultas más eficientes y menor transferencia de datos
+                innecesarios mejoran la velocidad del sistema.
+              </p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">🔒</div>
+              <h3>Consistencia</h3>
+              <p>
+                No hay información contradictoria en diferentes partes del
+                sistema, garantizando confiabilidad.
+              </p>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-store"></i> Impacto en Nuestro Sistema de
+                Zapatos
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <div class="success-box">
+                <h4>📊 Beneficios Específicos del Sistema:</h4>
+                <ul>
+                  <li>
+                    <strong>Gestión de Inventario:</strong> Los productos se
+                    relacionan eficientemente con proveedores y categorías sin
+                    duplicar información
+                  </li>
+                  <li>
+                    <strong>Proceso de Ventas:</strong> Las facturas mantienen
+                    un registro detallado sin redundancia, facilitando reportes
+                    y análisis
+                  </li>
+                  <li>
+                    <strong>Administración de Clientes:</strong> Información
+                    centralizada y consistente permite mejor servicio al cliente
+                  </li>
+                  <li>
+                    <strong>Relaciones Proveedor-Producto:</strong> Flexibilidad
+                    para múltiples proveedores por producto sin complicar la
+                    estructura
+                  </li>
+                  <li>
+                    <strong>Reporting y Análisis:</strong> Consultas más rápidas
+                    y datos confiables para toma de decisiones
+                  </li>
+                  <li>
+                    <strong>Escalabilidad del Negocio:</strong> Fácil expansión
+                    para nuevas categorías, productos o métodos de pago
+                  </li>
+                </ul>
+              </div>
+
+              <div class="info-box" style="margin-top: 1rem">
+                <h4>💡 Ejemplo Práctico de Eficiencia:</h4>
+                <p>
+                  <strong>Escenario:</strong> Cambiar el nombre de la categoría
+                  "Deportivos" a "Calzado Deportivo"
+                </p>
+                <ul>
+                  <li>
+                    <strong>Sin normalización:</strong> Actualizar cientos de
+                    registros de productos
+                  </li>
+                  <li>
+                    <strong>Con normalización:</strong> Actualizar solo 1
+                    registro en la tabla categoria_producto
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3><i class="fas fa-code"></i> Ventajas para el Desarrollo</h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <div class="highlight">
+                <h4>🚀 Beneficios para Ingenieros de Software:</h4>
+                <ul>
+                  <li>
+                    <strong>Código más limpio:</strong> Menos complejidad en la
+                    lógica de negocio
+                  </li>
+                  <li>
+                    <strong>Testing simplificado:</strong> Casos de prueba más
+                    claros y específicos
+                  </li>
+                  <li>
+                    <strong>Debugging eficiente:</strong> Problemas localizados
+                    en componentes específicos
+                  </li>
+                  <li>
+                    <strong>Reutilización de código:</strong> Componentes
+                    modulares y reutilizables
+                  </li>
+                  <li>
+                    <strong>Documentación clara:</strong> Estructura
+                    autodocumentada por el diseño
+                  </li>
+                  <li>
+                    <strong>Colaboración en equipo:</strong> Múltiples
+                    desarrolladores pueden trabajar sin conflictos
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="consultas" class="tab-content">
+        <div class="section">
+          <h2><i class="fas fa-search"></i> Ejemplos de Consultas SQL</h2>
+          <p>
+            Aunque no implementamos el sistema completo, aquí tienes ejemplos de
+            consultas que serían posibles con nuestra estructura normalizada:
+          </p>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-chart-bar"></i> Consultas Básicas de
+                Información
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <div class="highlight">
+                <h4>📋 Listar productos con su categoría</h4>
+                <pre><code>SELECT p.modelo, p.talla, p.color, p.precio, c.nombre as categoria
+FROM producto p
+JOIN categoria_producto c ON p.id_categoria = c.id_categoria
+ORDER BY c.nombre, p.precio;</code></pre>
+              </div>
+
+              <div class="info-box">
+                <h4>👥 Información completa de clientes</h4>
+                <pre><code>SELECT nombre, telefono, email, direccion
+FROM cliente
+WHERE email IS NOT NULL
+ORDER BY nombre;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-analytics"></i> Consultas de Análisis de Ventas
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <div class="success-box">
+                <h4>🏆 Productos más vendidos</h4>
+                <pre><code>SELECT p.modelo, p.color, p.talla, 
+       SUM(fp.cantidad) as total_vendido,
+       SUM(fp.cantidad * fp.precio_unitario) as ingresos_totales
+FROM producto p
+JOIN factura_producto fp ON p.id_producto = fp.id_producto
+GROUP BY p.id_producto, p.modelo, p.color, p.talla
+ORDER BY total_vendido DESC
+LIMIT 5;</code></pre>
+              </div>
+
+              <div class="highlight">
+                <h4>💰 Ingresos por categoría</h4>
+                <pre><code>SELECT c.nombre as categoria, 
+       COUNT(fp.id_producto) as productos_vendidos,
+       SUM(fp.cantidad * fp.precio_unitario) as ingresos_categoria
+FROM categoria_producto c
+JOIN producto p ON c.id_categoria = p.id_categoria
+JOIN factura_producto fp ON p.id_producto = fp.id_producto
+GROUP BY c.id_categoria, c.nombre
+ORDER BY ingresos_categoria DESC;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-users"></i> Consultas de Gestión de Clientes
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <div class="info-box">
+                <h4>🛒 Historial de compras por cliente</h4>
+                <pre><code>SELECT c.nombre as cliente, f.fecha, f.total,
+       e.nombre as vendedor, mp.tipo as metodo_pago
+FROM cliente c
+JOIN factura f ON c.id_cliente = f.id_cliente
+JOIN empleado e ON f.id_empleado = e.id_empleado
+JOIN metodo_pago mp ON f.id_metodoPago = mp.id_metodoPago
+ORDER BY c.nombre, f.fecha DESC;</code></pre>
+              </div>
+
+              <div class="success-box">
+                <h4>📊 Clientes más frecuentes</h4>
+                <pre><code>SELECT c.nombre, c.email,
+       COUNT(f.id_factura) as num_compras,
+       SUM(f.total) as gasto_total,
+       AVG(f.total) as compra_promedio
+FROM cliente c
+JOIN factura f ON c.id_cliente = f.id_cliente
+GROUP BY c.id_cliente, c.nombre, c.email
+HAVING num_compras > 1
+ORDER BY gasto_total DESC;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-truck"></i> Consultas de Gestión de Proveedores
+              </h3>
+              <i class="fas fa-chevron-down expand-icon"></i>
+            </div>
+            <div class="card-content">
+              <div class="highlight">
+                <h4>🏭 Productos por proveedor</h4>
+                <pre><code>SELECT pr.nombre as proveedor, 
+       COUNT(p.id_producto) as productos_suministrados,
+       p.modelo, c.nombre as categoria
+FROM proveedor pr
+JOIN proveedor_producto pp ON pr.id_proveedor = pp.id_proveedor
+JOIN producto p ON pp.id_producto = p.id_producto
+JOIN categoria_producto c ON p.id_categoria = c.id_categoria
+GROUP BY pr.id_proveedor, pr.nombre;</code></pre>
+              </div>
+
+              <div class="info-box">
+                <h4>📈 Análisis de proveedores por ventas</h4>
+                <pre><code>SELECT pr.nombre as proveedor,
+       SUM(fp.cantidad) as productos_vendidos,
+       SUM(fp.cantidad * fp.precio_unitario) as ingresos_generados
+FROM proveedor pr
+JOIN proveedor_producto pp ON pr.id_proveedor = pp.id_proveedor
+JOIN producto p ON pp.id_producto = p.id_producto
+JOIN factura_producto fp ON p.id_producto = fp.id_producto
+GROUP BY pr.id_proveedor, pr.nombre
+ORDER BY ingresos_generados DESC;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="normal-form">
+            <h3>
+              <i class="fas fa-lightbulb"></i> Ventajas de las Consultas
+              Normalizadas
+            </h3>
+            <ul>
+              <li>
+                <strong>Eficiencia:</strong> JOINs optimizados entre tablas
+                pequeñas y específicas
+              </li>
+              <li>
+                <strong>Flexibilidad:</strong> Fácil modificación de consultas
+                para nuevos requerimientos
+              </li>
+              <li>
+                <strong>Mantenibilidad:</strong> Consultas más legibles y
+                fáciles de entender
+              </li>
+              <li>
+                <strong>Reutilización:</strong> Subconsultas y vistas
+                reutilizables en múltiples reportes
+              </li>
+              <li>
+                <strong>Escalabilidad:</strong> Rendimiento consistente al
+                crecer el volumen de datos
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Floating Action Button -->
-    <button class="fab" onclick="scrollToTop()" title="Volver arriba">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-content">
+        <div class="footer-team">
+          <h3><i class="fas fa-graduation-cap"></i> Equipo de Desarrollo</h3>
+          <div class="footer-members">
+            <div class="footer-member">
+              <i class="fas fa-user-graduate"></i> DAVID GARCIA
+            </div>
+            <div class="footer-member">
+              <i class="fas fa-user-graduate"></i> HERNAN BARRIOS
+            </div>
+          </div>
+        </div>
 
-    <script>
-        // Tab Navigation
-        function showTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
-
-            // Remove active class from all tabs
-            const navTabs = document.querySelectorAll('.nav-tab');
-            navTabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-
-            // Update progress
-            updateProgress(tabName);
-
-            // Scroll to top smoothly
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Update Progress Indicator
-        function updateProgress(tabName) {
-            const steps = document.querySelectorAll('.progress-step');
-            const tabOrder = ['intro', 'erd', 'formas', 'beneficios', 'codigo', 'consultas'];
-            const currentIndex = tabOrder.indexOf(tabName);
-
-            steps.forEach((step, index) => {
-                step.classList.remove('active', 'completed');
-                if (index < currentIndex) {
-                    step.classList.add('completed');
-                } else if (index === currentIndex) {
-                    step.classList.add('active');
-                }
-            });
-        }
-
-        // Toggle Interactive Cards
-        function toggleCard(card) {
-            const content = card.querySelector('.card-content');
-            const isExpanded = card.classList.contains('expanded');
-
-            if (isExpanded) {
-                content.style.display = 'none';
-                card.classList.remove('expanded');
-            } else {
-                content.style.display = 'block';
-                card.classList.add('expanded');
-                content.classList.add('fade-in');
-            }
-        }
-
-        // Copy Code to Clipboard
-        function copyCode(elementId) {
-            const codeBlock = document.getElementById(elementId);
-            const text = codeBlock.textContent;
-
-            navigator.clipboard.writeText(text).then(() => {
-                // Show feedback
-                const button = event.target.closest('.copy-btn');
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-                button.style.background = '#27ae60';
-
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.style.background = '#3498db';
-                }, 2000);
-            }).catch(err => {
-                console.error('Error al copiar: ', err);
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-            });
-        }
-
-        // Scroll to Top
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // Keyboard Navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                const tabs = ['intro', 'erd', 'formas', 'beneficios', 'codigo', 'consultas'];
-                const currentTab = document.querySelector('.tab-content.active').id;
-                const currentIndex = tabs.indexOf(currentTab);
-
-                if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                    e.preventDefault();
-                    const prevTab = tabs[currentIndex - 1];
-                    document.querySelector(`[onclick="showTab('${prevTab}')"]`).click();
-                } else if (e.key === 'ArrowRight' && currentIndex < tabs.length - 1) {
-                    e.preventDefault();
-                    const nextTab = tabs[currentIndex + 1];
-                    document.querySelector(`[onclick="showTab('${nextTab}')"]`).click();
-                }
-            }
-        });
-
-        // Smooth scrolling for internal links
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add animation classes to elements as they come into view
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in');
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all sections and cards
-            document.querySelectorAll('.section, .entity-card, .interactive-card').forEach(el => {
-                observer.observe(el);
-            });
-
-            // Initialize progress
-            updateProgress('intro');
-        });
-
-        // Add touch support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 100;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                const tabs = ['intro', 'erd', 'formas', 'beneficios', 'codigo', 'consultas'];
-                const currentTab = document.querySelector('.tab-content.active').id;
-                const currentIndex = tabs.indexOf(currentTab);
-
-                if (diff > 0 && currentIndex < tabs.length - 1) {
-                    // Swipe left - next tab
-                    const nextTab = tabs[currentIndex + 1];
-                    document.querySelector(`[onclick="showTab('${nextTab}')"]`).click();
-                } else if (diff < 0 && currentIndex > 0) {
-                    // Swipe right - previous tab
-                    const prevTab = tabs[currentIndex - 1];
-                    document.querySelector(`[onclick="showTab('${prevTab}')"]`).click();
-                }
-            }
-        }
-    </script>
-</body>
+        <div
+          style="
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 1rem;
+            margin-top: 1rem;
+          "
+        >
+          <p>
+            <i class="fas fa-university"></i>
+            <strong>Proyecto Académico</strong> - Normalización de Bases de
+            Datos
+          </p>
+          <p>
+            <i class="fas fa-calendar-alt"></i> 27 de Agosto, 2025 |
+            <i class="fas fa-code"></i> Sistema de Venta de Zapatos
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
