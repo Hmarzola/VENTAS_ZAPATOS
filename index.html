@@ -624,30 +624,30 @@
           <div class="info-box">
             <h3><i class="fas fa-database"></i> Entidades del Sistema:</h3>
             <p>
-              El diagrama muestra un sistema normalizado con 8 entidades
-              principales que se relacionan de manera eficiente.
+              El diagrama muestra un sistema normalizado con 9 entidades
+              principales que se relacionan de manera eficiente, incluyendo las entidades de relación.
             </p>
           </div>
 
           <div class="entity-grid">
             <div class="entity-card">
-              <h4><i class="fas fa-shoe-prints"></i> Zapato</h4>
+              <h4><i class="fas fa-shoe-prints"></i> Producto</h4>
               <ul>
-                <li><strong>ID_Zapato:</strong> Clave primaria (INT)</li>
-                <li><strong>Nombre:</strong> VARCHAR(100)</li>
+                <li><strong>ID_Producto:</strong> Clave primaria (INT)</li>
+                <li><strong>Modelo:</strong> VARCHAR(100)</li>
                 <li><strong>Talla:</strong> VARCHAR(10)</li>
-                <li><strong>Color:</strong> VARCHAR(30)</li>
-                <li><strong>PrecioVenta:</strong> DECIMAL(10,2)</li>
-                <li><strong>Stock:</strong> INT</li>
+                <li><strong>Color:</strong> VARCHAR(50)</li>
+                <li><strong>Precio:</strong> DECIMAL(10,2)</li>
                 <li><strong>ID_Categoria:</strong> Clave foránea</li>
               </ul>
             </div>
 
             <div class="entity-card">
-              <h4><i class="fas fa-tags"></i> Categoría_zapato</h4>
+              <h4><i class="fas fa-tags"></i> Categoria_producto</h4>
               <ul>
                 <li><strong>ID_Categoria:</strong> Clave primaria (INT)</li>
                 <li><strong>Nombre:</strong> VARCHAR(50)</li>
+                <li><strong>Descripcion:</strong> VARCHAR(150)</li>
               </ul>
             </div>
 
@@ -683,38 +683,40 @@
             </div>
 
             <div class="entity-card">
+              <h4><i class="fas fa-link"></i> Proveedor_producto</h4>
+              <ul>
+                <li><strong>ID_Proveedor:</strong> Clave foránea (INT)</li>
+                <li><strong>ID_Producto:</strong> Clave foránea (INT)</li>
+              </ul>
+            </div>
+
+            <div class="entity-card">
               <h4><i class="fas fa-receipt"></i> Factura</h4>
               <ul>
                 <li><strong>ID_Factura:</strong> Clave primaria (INT)</li>
                 <li><strong>Fecha:</strong> DATE</li>
-                <li><strong>Total:</strong> DECIMAL(12,2)</li>
-                <li><strong>IVA:</strong> DECIMAL(12,2)</li>
-                <li><strong>Descuento:</strong> DECIMAL(12,2)</li>
-                <li><strong>Estado:</strong> VARCHAR(20)</li>
-                <li>
-                  <strong>Claves foráneas:</strong> Cliente, Empleado,
-                  Proveedor, Método Pago
-                </li>
+                <li><strong>ID_Cliente:</strong> Clave foránea (INT)</li>
+                <li><strong>ID_Empleado:</strong> Clave foránea (INT)</li>
+                <li><strong>ID_MetodoPago:</strong> Clave foránea (INT)</li>
+                <li><strong>Total:</strong> DECIMAL(10,2)</li>
               </ul>
             </div>
 
             <div class="entity-card">
-              <h4><i class="fas fa-list"></i> Detalle_factura</h4>
+              <h4><i class="fas fa-list"></i> Factura_producto</h4>
               <ul>
-                <li><strong>ID_Detalle:</strong> Clave primaria (INT)</li>
+                <li><strong>ID_Factura:</strong> Clave foránea (INT)</li>
+                <li><strong>ID_Producto:</strong> Clave foránea (INT)</li>
                 <li><strong>Cantidad:</strong> INT</li>
-                <li><strong>PrecioUnitario:</strong> DECIMAL(10,2)</li>
-                <li><strong>Subtotal:</strong> DECIMAL(12,2)</li>
-                <li><strong>ID_Factura:</strong> Clave foránea</li>
-                <li><strong>ID_Zapato:</strong> Clave foránea</li>
+                <li><strong>Precio_Unitario:</strong> DECIMAL(10,2)</li>
               </ul>
             </div>
 
             <div class="entity-card">
-              <h4><i class="fas fa-credit-card"></i> Método_pago</h4>
+              <h4><i class="fas fa-credit-card"></i> Metodo_pago</h4>
               <ul>
-                <li><strong>ID_Pago:</strong> Clave primaria (INT)</li>
-                <li><strong>Nombre:</strong> VARCHAR(50)</li>
+                <li><strong>ID_MetodoPago:</strong> Clave primaria (INT)</li>
+                <li><strong>Tipo:</strong> VARCHAR(50)</li>
               </ul>
             </div>
           </div>
@@ -722,12 +724,10 @@
           <div class="success-box">
             <h3><i class="fas fa-link"></i> Relaciones Principales:</h3>
             <ul>
-              <li><strong>Zapato → Categoría:</strong> Muchos a Uno</li>
-              <li>
-                <strong>Factura → Cliente/Empleado/Proveedor:</strong> Muchos a
-                Uno
-              </li>
-              <li><strong>Detalle → Factura/Zapato:</strong> Muchos a Uno</li>
+              <li><strong>Producto → Categoria_producto:</strong> Muchos a Uno</li>
+              <li><strong>Proveedor_producto → Proveedor/Producto:</strong> Muchos a Uno</li>
+              <li><strong>Factura → Cliente/Empleado/Metodo_pago:</strong> Muchos a Uno</li>
+              <li><strong>Factura_producto → Factura/Producto:</strong> Muchos a Uno</li>
             </ul>
           </div>
         </div>
