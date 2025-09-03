@@ -1143,6 +1143,12 @@ INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario
 (2, 4, 1, 220000);
             </div>
           </div>
+
+          <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <img src="./1.jpeg" alt="Imagen 1 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <img src="./2.jpeg" alt="Imagen 2 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <img src="./3.jpeg" alt="Imagen 3 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+          </div>
         </div>
       </div>
 
@@ -1181,6 +1187,11 @@ INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario
                   </button>
                 </div>
                 <div class="code-block" id="consulta-cliente">SELECT * FROM cliente where Nombre like "%Juan Pérez%";</div>
+              </div>
+
+              <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <img src="./11.jpeg" alt="Imagen 1 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                <img src="./22.jpeg" alt="Imagen 2 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
               </div>
             </div>
           </div>
@@ -1235,6 +1246,11 @@ FROM proveedor pr
 JOIN proveedor_producto pp ON pr.id_proveedor = pp.id_proveedor
 JOIN producto p ON pp.id_producto = p.id_producto;
                 </div>
+              </div>
+
+              <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <img src="./33.jpeg" alt="Imagen 1 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                <img src="./55.jpeg" alt="Imagen 2 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
               </div>
             </div>
           </div>
@@ -1301,6 +1317,12 @@ GROUP BY pr.nombre
 ORDER BY total_productos DESC
 LIMIT 1;
                 </div>
+              </div>
+
+              <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <img src="./56.jpeg" alt="Imagen 1 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                <img src="./57.jpeg" alt="Imagen 2 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                <img src="./144.jpeg" alt="Imagen 3 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
               </div>
             </div>
           </div>
