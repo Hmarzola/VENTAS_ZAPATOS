@@ -1053,6 +1053,18 @@
         <div class="section">
           <h2><i class="fas fa-plus-circle"></i> Creación de la Base de Datos</h2>
 
+          <div class="highlight info-box" style="margin-bottom: 2rem;">
+            <h3><i class="fas fa-lightbulb"></i> ¿Qué vamos a crear?</h3>
+            <p>En esta sección crearemos la estructura de nuestra base de datos de zapatos. Es como construir los cimientos de una casa:</p>
+            <ul>
+              <li><strong>Clientes:</strong> Aquí guardaremos la información de quienes compran (nombre, teléfono, etc.)</li>
+              <li><strong>Productos:</strong> Todos los zapatos con sus detalles (modelo, talla, color, precio)</li>
+              <li><strong>Ventas:</strong> El registro de cada venta realizada</li>
+              <li><strong>Y más:</strong> Categorías, empleados, proveedores... ¡Todo lo necesario!</li>
+            </ul>
+            <p><i class="fas fa-info-circle"></i> <em>Consejo: Puedes copiar este código y ejecutarlo en tu sistema de base de datos MySQL para crear toda la estructura.</em></p>
+          </div>
+
           <div class="code-container">
             <div class="code-header">
               <span class="code-title"><i class="fas fa-database"></i> Crear Base de Datos y Tablas</span>
@@ -1193,9 +1205,9 @@ INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario
           </div>
 
           <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-            <img src="./1.jpeg" alt="Imagen 1 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-            <img src="./2.jpeg" alt="Imagen 2 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-            <img src="./3.jpeg" alt="Imagen 3 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+            <img src="./1.jpeg" alt="Imagen 1 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
+            <img src="./2.jpeg" alt="Imagen 2 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
+            <img src="./3.jpeg" alt="Imagen 3 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
           </div>
         </div>
       </div>
@@ -1204,9 +1216,29 @@ INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario
         <div class="section">
           <h2><i class="fas fa-search"></i> Consultas SQL</h2>
 
+          <div class="highlight info-box" style="margin-bottom: 2rem;">
+            <h3><i class="fas fa-graduation-cap"></i> Aprendiendo a Consultar Datos</h3>
+            <p>Las consultas SQL son como preguntas que le hacemos a nuestra base de datos. Empezaremos con las más sencillas y avanzaremos gradualmente:</p>
+            <ul>
+              <li><strong>Consultas Simples:</strong> Son las más básicas, como pedir "muéstrame todos los clientes"</li>
+              <li><strong>Consultas Intermedias:</strong> Combinan información de varias tablas</li>
+              <li><strong>Consultas Avanzadas:</strong> Realizan cálculos y análisis más complejos</li>
+            </ul>
+            <p><i class="fas fa-info-circle"></i> <em>¡No te preocupes! Cada consulta viene con una explicación clara y ejemplos visuales.</em></p>
+          </div>
+
           <div class="interactive-card" onclick="toggleCard(this)">
             <h3><i class="fas fa-list"></i> Consultas Simples</h3>
             <div class="card-content" style="display: none">
+              <div class="highlight" style="margin-bottom: 1rem;">
+                <p><i class="fas fa-info-circle"></i> <strong>Explicación sencilla:</strong> Estas consultas son como pedirle a un vendedor que te muestre:</p>
+                <ul>
+                  <li>Todas las ventas realizadas</li>
+                  <li>La lista de proveedores con sus datos de contacto</li>
+                  <li>Buscar un cliente específico por su nombre</li>
+                </ul>
+              </div>
+
               <div class="code-container">
                 <div class="code-header">
                   <span class="code-title">Ver todas las facturas</span>
@@ -1238,8 +1270,8 @@ INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario
               </div>
 
               <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <img src="./11.jpeg" alt="Imagen 1 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./22.jpeg" alt="Imagen 2 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                <img src="./11.jpeg" alt="Imagen 1 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
+                <img src="./22.jpeg" alt="Imagen 2 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
               </div>
             </div>
           </div>
@@ -1247,6 +1279,16 @@ INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario
           <div class="interactive-card" onclick="toggleCard(this)">
             <h3><i class="fas fa-link"></i> Consultas Intermedias</h3>
             <div class="card-content" style="display: none">
+              <div class="highlight" style="margin-bottom: 1rem;">
+                <p><i class="fas fa-info-circle"></i> <strong>¿Qué hacen estas consultas?</strong></p>
+                <ul>
+                  <li><strong>Facturas con empleado:</strong> Nos muestra quién atendió cada venta</li>
+                  <li><strong>Detalle de productos:</strong> Lista todo lo que se vendió en cada factura</li>
+                  <li><strong>Proveedores y productos:</strong> Nos dice qué productos suministra cada proveedor</li>
+                </ul>
+                <p><em>Estas consultas son como unir piezas de un rompecabezas para ver la imagen completa de cada venta.</em></p>
+              </div>
+
               <div class="code-container">
                 <div class="code-header">
                   <span class="code-title">Facturas con empleado que las gestionó</span>
@@ -1297,8 +1339,8 @@ JOIN producto p ON pp.id_producto = p.id_producto;
               </div>
 
               <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <img src="./33.jpeg" alt="Imagen 1 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./55.jpeg" alt="Imagen 2 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                <img src="./33.jpeg" alt="Imagen 1 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
+                <img src="./55.jpeg" alt="Imagen 2 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
               </div>
             </div>
           </div>
@@ -1306,6 +1348,17 @@ JOIN producto p ON pp.id_producto = p.id_producto;
           <div class="interactive-card" onclick="toggleCard(this)">
             <h3><i class="fas fa-chart-bar"></i> Consultas Avanzadas</h3>
             <div class="card-content" style="display: none">
+              <div class="highlight" style="margin-bottom: 1rem;">
+                <p><i class="fas fa-star"></i> <strong>Consultas más poderosas:</strong></p>
+                <ul>
+                  <li><strong>Promedio de ventas:</strong> Calculamos cuánto se vende típicamente en cada factura</li>
+                  <li><strong>Mejores empleados:</strong> Descubrimos quiénes han realizado más ventas</li>
+                  <li><strong>Clientes destacados:</strong> Identificamos a los clientes que compran más que el promedio</li>
+                  <li><strong>Proveedores principales:</strong> Encontramos quién nos suministra más variedad de productos</li>
+                </ul>
+                <p><em>Estas consultas son como tener un asistente analista que nos ayuda a tomar mejores decisiones de negocio.</em></p>
+              </div>
+
               <div class="code-container">
                 <div class="code-header">
                   <span class="code-title">Ingreso promedio por factura</span>
@@ -1368,9 +1421,9 @@ LIMIT 1;
               </div>
 
               <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <img src="./56.jpeg" alt="Imagen 1 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./57.jpeg" alt="Imagen 2 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./144.jpeg" alt="Imagen 3 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                <img src="./56.jpeg" alt="Imagen 1 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
+                <img src="./57.jpeg" alt="Imagen 2 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
+                <img src="./144.jpeg" alt="Imagen 3 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="openImageModal(this.src, this.alt)">
               </div>
             </div>
           </div>
@@ -1380,6 +1433,18 @@ LIMIT 1;
       <div id="extras" class="tab-content">
         <div class="section">
           <h2><i class="fas fa-star"></i> Funcionalidades Extras</h2>
+
+          <div class="highlight info-box" style="margin-bottom: 2rem;">
+            <h3><i class="fas fa-rocket"></i> ¿Qué más podemos hacer?</h3>
+            <p>Imagina que nuestra base de datos es como una caja de herramientas. Ya tenemos las herramientas básicas, pero podemos añadir más para hacer nuestro trabajo más fácil y efectivo:</p>
+            <ul>
+              <li><strong>Reportes automáticos:</strong> Como tener un asistente que nos prepare informes</li>
+              <li><strong>Control de inventario:</strong> Para nunca quedarnos sin stock</li>
+              <li><strong>Sistema de alertas:</strong> Nos avisa cuando algo importante sucede</li>
+              <li><strong>Análisis de ventas:</strong> Para tomar mejores decisiones comerciales</li>
+            </ul>
+            <p><i class="fas fa-lightbulb"></i> <em>¡Estas mejoras harán que nuestro sistema sea más inteligente y útil!</em></p>
+          </div>
 
           <div class="highlight">
             <h3><i class="fas fa-info-circle"></i> Información Adicional del Sistema</h3>
@@ -1392,6 +1457,109 @@ LIMIT 1;
               <li><i class="fas fa-file-export"></i> Exportación de datos</li>
               <li><i class="fas fa-history"></i> Auditoría y logs del sistema</li>
             </ul>
+          </div>
+
+          <div class="section">
+            <h3><i class="fas fa-chart-line"></i> Consultas de Análisis de Negocio</h3>
+            
+            <div class="highlight info-box" style="margin-bottom: 2rem;">
+              <h4><i class="fas fa-magic"></i> Descubriendo información valiosa</h4>
+              <p>Estas consultas son como tener un asistente personal que nos ayuda a entender mejor nuestro negocio. ¡Veamos qué podemos descubrir!</p>
+            </div>
+
+            <div class="interactive-card" onclick="toggleCard(this)">
+              <h4><i class="fas fa-users"></i> Clientes que compraron un modelo específico</h4>
+              <div class="card-content" style="display: none">
+                <div class="highlight" style="margin-bottom: 1rem;">
+                  <p><strong>¿Qué hace esta consulta?</strong> Encuentra todos los clientes que han comprado un modelo específico de zapato (en este caso, Botas Timberland).</p>
+                  <p><em>Es como preguntarle al sistema: "¿Quiénes han comprado estas botas?"</em></p>
+                </div>
+                <div class="code-container">
+                  <div class="code-block">
+SELECT DISTINCT c.*
+FROM Cliente c
+JOIN Factura f ON c.id_cliente = f.id_cliente
+JOIN Factura_Producto fp ON f.id_factura = fp.id_factura
+JOIN Producto p ON fp.id_producto = p.id_producto
+WHERE p.modelo = 'Botas Timberland';
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="interactive-card" onclick="toggleCard(this)">
+              <h4><i class="fas fa-trophy"></i> Producto más caro y más económico</h4>
+              <div class="card-content" style="display: none">
+                <div class="highlight" style="margin-bottom: 1rem;">
+                  <p><strong>¿Qué hacen estas consultas?</strong> Nos muestran el zapato más caro y el más económico de nuestra tienda.</p>
+                  <p><em>Es como encontrar los extremos de nuestro catálogo de precios.</em></p>
+                </div>
+                <div class="code-container">
+                  <div class="code-header">
+                    <span class="code-title">Producto más caro</span>
+                  </div>
+                  <div class="code-block">
+SELECT modelo, precio 
+FROM Producto
+ORDER BY precio DESC
+LIMIT 1;
+                  </div>
+                </div>
+                <div class="code-container">
+                  <div class="code-header">
+                    <span class="code-title">Producto más económico</span>
+                  </div>
+                  <div class="code-block">
+SELECT modelo, precio 
+FROM Producto
+ORDER BY precio ASC
+LIMIT 1;
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="interactive-card" onclick="toggleCard(this)">
+              <h4><i class="fas fa-calculator"></i> Promedio de gasto por cliente</h4>
+              <div class="card-content" style="display: none">
+                <div class="highlight" style="margin-bottom: 1rem;">
+                  <p><strong>¿Qué hace esta consulta?</strong> Calcula cuánto gasta en promedio cada cliente en nuestra tienda.</p>
+                  <p><em>Es como tener un resumen de los hábitos de compra de nuestros clientes.</em></p>
+                </div>
+                <div class="code-container">
+                  <div class="code-block">
+SELECT c.nombre, AVG(f.total) AS promedio_gasto
+FROM Cliente c
+JOIN Factura f ON c.id_cliente = f.id_cliente
+GROUP BY c.nombre;
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="interactive-card" onclick="toggleCard(this)">
+              <h4><i class="fas fa-calendar-alt"></i> Resumen mensual de ventas</h4>
+              <div class="card-content" style="display: none">
+                <div class="highlight" style="margin-bottom: 1rem;">
+                  <p><strong>¿Qué hace esta consulta?</strong> Nos muestra un resumen mes a mes de:</p>
+                  <ul>
+                    <li>Total de ventas en dinero</li>
+                    <li>Cantidad de facturas generadas</li>
+                  </ul>
+                  <p><em>Es como tener un calendario financiero de la tienda.</em></p>
+                </div>
+                <div class="code-container">
+                  <div class="code-block">
+SELECT DATE_FORMAT(f.fecha, '%Y-%m') AS mes, 
+       SUM(f.total) AS total_ventas, 
+       COUNT(f.id_factura) AS cantidad_facturas
+FROM Factura f
+GROUP BY DATE_FORMAT(f.fecha, '%Y-%m')
+ORDER BY mes;
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="info-box">
