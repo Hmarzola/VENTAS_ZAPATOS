@@ -1424,6 +1424,14 @@ LIMIT 1;
       <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+      <span class="close-modal" onclick="closeImageModal()">&times;</span>
+      <div class="modal-content">
+        <img id="modalImage" src="" alt="Imagen ampliada">
+      </div>
+    </div>
+
     <script>
       // Tab Navigation
       function showTab(tabName) {
@@ -1625,6 +1633,40 @@ LIMIT 1;
           }
         }
       }
+
+      // Image Modal Functions
+      function openImageModal(src, alt) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        modal.style.display = 'flex';
+        modalImg.src = src;
+        modalImg.alt = alt;
+        modal.classList.add('active');
+      }
+
+      function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+        modal.classList.remove('active');
+      }
+
+      // Close modal when clicking outside the image
+      document.getElementById('imageModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeImageModal();
+        }
+      });
+
+      // Add click event listeners to all images in galleries
+      document.addEventListener('DOMContentLoaded', function() {
+        const galleryImages = document.querySelectorAll('.image-gallery img');
+        galleryImages.forEach(img => {
+          img.style.cursor = 'pointer';
+          img.addEventListener('click', function() {
+            openImageModal(this.src, this.alt);
+          });
+        });
+      });
     </script>
   </body>
 </html>
