@@ -4,10 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Normalización de Bases de Datos - Sistema Interactivo</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
       * {
         margin: 0;
@@ -22,7 +20,6 @@
         min-height: 100vh;
       }
 
-      /* Header */
       .header {
         background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         color: white;
@@ -45,13 +42,6 @@
         opacity: 0.9;
       }
 
-      .author-info {
-        margin-top: 1rem;
-        font-size: 0.9rem;
-        opacity: 0.8;
-      }
-
-      /* Container */
       .container {
         max-width: 1400px;
         margin: 2rem auto;
@@ -59,38 +49,28 @@
         border-radius: 15px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+        padding: 2rem;
       }
 
-      /* Navigation Tabs */
       .nav-tabs {
         display: flex;
         background: #f8f9fa;
         border-bottom: 3px solid #e9ecef;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-      }
-
-      .nav-tabs::-webkit-scrollbar {
-        display: none;
+        margin-bottom: 2rem;
+        border-radius: 10px;
       }
 
       .nav-tab {
         flex: 1;
-        min-width: 200px;
         padding: 1rem 1.5rem;
-        background: #f8f9fa;
+        background: transparent;
         border: none;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 600;
         color: #495057;
         transition: all 0.3s ease;
-        border-bottom: 3px solid transparent;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
+        text-align: center;
       }
 
       .nav-tab:hover {
@@ -99,35 +79,11 @@
       }
 
       .nav-tab.active {
-        background: white;
-        color: #3498db;
-        border-bottom-color: #3498db;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        background: #3498db;
+        color: white;
+        border-radius: 8px;
       }
 
-      /* Tab Content */
-      .tab-content {
-        display: none;
-        padding: 2rem;
-        animation: fadeIn 0.5s ease-in-out;
-      }
-
-      .tab-content.active {
-        display: block;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* Sections */
       .section {
         margin-bottom: 2rem;
         padding: 2rem;
@@ -137,1534 +93,194 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       }
 
-      .section h2 {
-        color: #2c3e50;
-        margin-bottom: 1rem;
-        font-size: clamp(1.5rem, 3vw, 2rem);
-      }
-
-      .section h3 {
-        color: #34495e;
-        margin: 1.5rem 0 1rem 0;
-        font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-      }
-
-      /* Interactive Elements */
-      .interactive-card {
-        background: white;
-        border-radius: 10px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        cursor: pointer;
-        border: 2px solid transparent;
-      }
-
-      .interactive-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        border-color: #3498db;
-      }
-
-      .interactive-card.expanded {
-        border-color: #27ae60;
-        background: #f8fff8;
-      }
-
-      /* ERD Diagram */
-      .erd-container {
-        text-align: center;
-        margin: 2rem 0;
-        padding: 2rem;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      }
-
-      .erd-placeholder {
-        background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
-          linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
-          linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
-          linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
-        background-size: 20px 20px;
-        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-        padding: 3rem;
-        border-radius: 10px;
-        border: 2px dashed #ccc;
-        min-height: 400px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      /* Entity Analysis Grid */
-      .entity-grid {
+      .image-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1.5rem;
-        margin: 2rem 0;
-      }
-
-      .entity-card {
-        background: white;
-        border-radius: 10px;
         padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border-left: 4px solid #3498db;
-        transition: all 0.3s ease;
       }
 
-      .entity-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      }
-
-      .entity-card h4 {
-        color: #2c3e50;
-        margin-bottom: 1rem;
-        font-size: 1.3rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      /* Tables */
-      .table-container {
-        overflow-x: auto;
-        margin: 1.5rem 0;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
+      .image-card {
+        position: relative;
+        cursor: pointer;
         border-radius: 10px;
         overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        aspect-ratio: 3/2;
       }
 
-      th,
-      td {
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 1px solid #e9ecef;
+      .image-card:hover {
+        transform: scale(1.03);
       }
 
-      th {
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        color: white;
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-
-      tr:hover {
-        background-color: #f8f9fa;
-      }
-
-      /* Code Block */
-      .code-container {
-        position: relative;
-        margin: 1.5rem 0;
-      }
-
-      .code-header {
-        background: #2c3e50;
-        color: white;
-        padding: 1rem;
-        border-radius: 10px 10px 0 0;
-        display: flex;
-        justify-content: between;
-        align-items: center;
-      }
-
-      .code-title {
-        font-weight: 600;
-      }
-
-      .copy-btn {
-        background: #3498db;
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-      }
-
-      .copy-btn:hover {
-        background: #2980b9;
-      }
-
-      .code-block {
-        background: #2c3e50;
-        color: #ecf0f1;
-        padding: 1.5rem;
-        border-radius: 0 0 10px 10px;
-        font-family: "Courier New", monospace;
-        overflow-x: auto;
-        line-height: 1.6;
-        font-size: 0.9rem;
-      }
-
-      /* Progress Indicator */
-      .progress-container {
-        display: flex;
-        justify-content: center;
-        margin: 2rem 0;
-        gap: 1rem;
-      }
-
-      .progress-step {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #e9ecef;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        color: #6c757d;
-        transition: all 0.3s ease;
-      }
-
-      .progress-step.active {
-        background: #3498db;
-        color: white;
-        transform: scale(1.1);
-      }
-
-      .progress-step.completed {
-        background: #27ae60;
-        color: white;
-      }
-
-      /* Highlight Boxes */
-      .highlight {
-        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-        padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #ffc107;
-        margin: 1.5rem 0;
-        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
-      }
-
-      .success-box {
-        background: linear-gradient(135deg, #d4edda, #a8e6cf);
-        border-left-color: #28a745;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
-      }
-
-      .info-box {
-        background: linear-gradient(135deg, #d1ecf1, #81ecec);
-        border-left-color: #17a2b8;
-        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.2);
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        .container {
-          margin: 1rem;
-          border-radius: 10px;
-        }
-
-        .tab-content {
-          padding: 1rem;
-        }
-
-        .section {
-          padding: 1.5rem;
-        }
-
-        .entity-grid {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-
-        .nav-tab {
-          min-width: 150px;
-          padding: 0.8rem 1rem;
-          font-size: 0.9rem;
-        }
-
-        .progress-container {
-          gap: 0.5rem;
-        }
-
-        .progress-step {
-          width: 35px;
-          height: 35px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .header {
-          padding: 1.5rem 1rem;
-        }
-
-        .nav-tab {
-          min-width: 120px;
-          padding: 0.7rem 0.8rem;
-          font-size: 0.8rem;
-        }
-
-        .section {
-          padding: 1rem;
-        }
-      }
-
-      /* Animation Classes */
-      .fade-in {
-        animation: fadeIn 0.5s ease-in-out;
-      }
-
-      .slide-up {
-        animation: slideUp 0.5s ease-in-out;
-      }
-
-      @keyframes slideUp {
-        from {
-          transform: translateY(30px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      .bounce {
-        animation: bounce 0.6s ease-in-out;
-      }
-
-      @keyframes bounce {
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
-          transform: translateY(0);
-        }
-        40% {
-          transform: translateY(-10px);
-        }
-        60% {
-          transform: translateY(-5px);
-        }
-      }
-
-      /* Floating Action Button */
-      .fab {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        color: white;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 20px rgba(52, 152, 219, 0.4);
-        z-index: 1000;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-      }
-
-      .fab:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 25px rgba(52, 152, 219, 0.6);
-      }
-
-      /* Loading Animation */
-      .loading {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #3498db;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* Image Modal */
-      .image-modal {
-        display: none;
-        position: fixed;
-        z-index: 10000;
-        left: 0;
-        top: 0;
+      .image-card img {
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
+        object-fit: cover;
+        transition: transform 0.3s ease;
       }
 
-      .image-modal.active {
-        display: flex;
+      .modal-image {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+      }
+
+      .modal-dialog {
+        max-width: 90vw;
+        margin: 1.75rem auto;
       }
 
       .modal-content {
-        max-width: 90%;
-        max-height: 90%;
-        position: relative;
+        background-color: transparent;
+        border: none;
       }
 
-      .modal-content img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      .modal-body {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .close-modal {
         position: absolute;
-        top: -50px;
-        right: 0;
+        top: 1rem;
+        right: 1rem;
         color: white;
-        font-size: 40px;
-        font-weight: bold;
+        font-size: 2rem;
         cursor: pointer;
-        transition: color 0.3s ease;
+        z-index: 1060;
       }
 
-      .close-modal:hover {
-        color: #3498db;
+      .code-section {
+        background: #1e1e1e;
+        color: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        overflow-x: auto;
+      }
+
+      .code-section pre {
+        margin: 0;
+        white-space: pre-wrap;
       }
     </style>
   </head>
   <body>
-    <div class="header">
+    <header class="header">
       <h1><i class="fas fa-database"></i> Normalización de Bases de Datos</h1>
       <p>Sistema Interactivo de Venta de Zapatos</p>
       <div class="author-info">
-        <i class="fas fa-user"></i> Desarrollado por:
-        <strong>Hernan Barrios y David Garcia</strong> |
-        <i class="fas fa-calendar"></i> 21 de Agosto, 2025
+        <p>Desarrollado por: Hernan Barrios y David Garcia | 21 de Agosto, 2025</p>
       </div>
-    </div>
+    </header>
 
-    <div class="container">
-      <!-- Progress Indicator -->
-      <div class="progress-container">
-        <div class="progress-step active" data-step="1">1</div>
-        <div class="progress-step" data-step="2">2</div>
-        <div class="progress-step" data-step="3">3</div>
-        <div class="progress-step" data-step="4">4</div>
-        <div class="progress-step" data-step="5">5</div>
-        <div class="progress-step" data-step="6">6</div>
-        <div class="progress-step" data-step="7">7</div>
-      </div>
-
-      <!-- Navigation Tabs -->
-      <div class="nav-tabs">
-        <button class="nav-tab active" onclick="showTab('intro')">
-          <i class="fas fa-home"></i> Introducción
-        </button>
-        <button class="nav-tab" onclick="showTab('erd')">
-          <i class="fas fa-project-diagram"></i> Diagrama ERD
-        </button>
-        <button class="nav-tab" onclick="showTab('formas')">
-          <i class="fas fa-layer-group"></i> Formas Normales
-        </button>
-        <button class="nav-tab" onclick="showTab('beneficios')">
-          <i class="fas fa-check-circle"></i> Beneficios
-        </button>
-        <button class="nav-tab" onclick="showTab('creacion')">
+    <main class="container">
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="creacion">
           <i class="fas fa-plus-circle"></i> Creación
         </button>
-        <button class="nav-tab" onclick="showTab('consultas')">
+        <button class="nav-tab" data-tab="consultas">
           <i class="fas fa-search"></i> Consultas
         </button>
-        <button class="nav-tab" onclick="showTab('extras')">
+        <button class="nav-tab" data-tab="extras">
           <i class="fas fa-star"></i> Extras
         </button>
-      </div>
+      </nav>
 
-      <!-- Tab Contents -->
-      <div id="intro" class="tab-content active">
-        <div class="section">
-          <h2><i class="fas fa-bullseye"></i> ¿Qué es la Normalización?</h2>
-          <p>
-            La normalización es un proceso de diseño de bases de datos que
-            organiza los datos para <strong>minimizar la redundancia</strong> y
-            <strong>evitar anomalías</strong> de inserción, actualización y
-            eliminación.
-          </p>
-
-          <div class="highlight">
-            <h3><i class="fas fa-target"></i> Objetivos principales:</h3>
-            <ul>
-              <li>
-                <i class="fas fa-minus-circle"></i> Eliminar datos redundantes
-              </li>
-              <li>
-                <i class="fas fa-shield-alt"></i> Mantener la integridad de los
-                datos
-              </li>
-              <li><i class="fas fa-tools"></i> Facilitar el mantenimiento</li>
-              <li>
-                <i class="fas fa-compress-alt"></i> Optimizar el almacenamiento
-              </li>
-            </ul>
+      <section id="creacion" class="section">
+        <h2>Creación de la Base de Datos</h2>
+        <div class="image-container">
+          <div class="image-card">
+            <img src="1.jpeg" alt="Diagrama 1">
           </div>
-
-          <div class="interactive-card" onclick="toggleCard(this)">
-            <h3>
-              <i class="fas fa-info-circle"></i> ¿Por qué es importante la
-              normalización?
-            </h3>
-            <div class="card-content" style="display: none">
-              <p>Sin normalización, las bases de datos pueden sufrir de:</p>
-              <ul>
-                <li>
-                  <strong>Redundancia:</strong> Información duplicada que
-                  consume espacio innecesario
-                </li>
-                <li>
-                  <strong>Anomalías de inserción:</strong> Dificultad para
-                  agregar nuevos datos
-                </li>
-                <li>
-                  <strong>Anomalías de actualización:</strong> Inconsistencias
-                  al modificar datos
-                </li>
-                <li>
-                  <strong>Anomalías de eliminación:</strong> Pérdida no deseada
-                  de información
-                </li>
-              </ul>
-            </div>
+          <div class="image-card">
+            <img src="2.jpeg" alt="Diagrama 2">
+          </div>
+          <div class="image-card">
+            <img src="3.jpeg" alt="Diagrama 3">
           </div>
         </div>
-      </div>
+      </section>
 
-      <div id="erd" class="tab-content">
-        <div class="section">
-          <h2>
-            <i class="fas fa-sitemap"></i> Diagrama ERD - Sistema de Venta de
-            Zapatos
-          </h2>
-
-          <div class="erd-container">
-            <div class="erd-display">
-              <h3>Diagrama ERD del Sistema</h3>
-              <img
-                src="./db.jpg"
-                alt="Diagrama ERD del Sistema de Venta de Zapatos"
-                style="
-                  max-width: 100%;
-                  height: auto;
-                  border-radius: 10px;
-                  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                  margin: 1rem 0;
-                "
-              />
-            </div>
+      <section id="consultas" class="section">
+        <h2>Consultas SQL</h2>
+        <div class="image-container">
+          <div class="image-card">
+            <img src="11.jpeg" alt="Consulta 1">
           </div>
-
-          <div class="info-box">
-            <h3><i class="fas fa-database"></i> Entidades del Sistema:</h3>
-            <p>
-              El diagrama muestra un sistema normalizado con 9 entidades
-              principales que se relacionan de manera eficiente, incluyendo las entidades de relación.
-            </p>
+          <div class="image-card">
+            <img src="22.jpeg" alt="Consulta 2">
           </div>
-
-          <div class="entity-grid">
-            <div class="entity-card">
-              <h4><i class="fas fa-shoe-prints"></i> Producto</h4>
-              <ul>
-                <li><strong>ID_Producto:</strong> Clave primaria (INT)</li>
-                <li><strong>Modelo:</strong> VARCHAR(100)</li>
-                <li><strong>Talla:</strong> VARCHAR(10)</li>
-                <li><strong>Color:</strong> VARCHAR(50)</li>
-                <li><strong>Precio:</strong> DECIMAL(10,2)</li>
-                <li><strong>ID_Categoria:</strong> Clave foránea</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-tags"></i> Categoria_producto</h4>
-              <ul>
-                <li><strong>ID_Categoria:</strong> Clave primaria (INT)</li>
-                <li><strong>Nombre:</strong> VARCHAR(50)</li>
-                <li><strong>Descripcion:</strong> VARCHAR(150)</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-user"></i> Cliente</h4>
-              <ul>
-                <li><strong>ID_Cliente:</strong> Clave primaria (INT)</li>
-                <li><strong>Nombre:</strong> VARCHAR(100)</li>
-                <li><strong>Telefono:</strong> VARCHAR(20)</li>
-                <li><strong>Direccion:</strong> VARCHAR(150)</li>
-                <li><strong>Email:</strong> VARCHAR(100)</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-user-tie"></i> Empleado</h4>
-              <ul>
-                <li><strong>ID_Empleado:</strong> Clave primaria (INT)</li>
-                <li><strong>Nombre:</strong> VARCHAR(100)</li>
-                <li><strong>Cargo:</strong> VARCHAR(50)</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-building"></i> Proveedor</h4>
-              <ul>
-                <li><strong>ID_Proveedor:</strong> Clave primaria (INT)</li>
-                <li><strong>Nombre:</strong> VARCHAR(100)</li>
-                <li><strong>Telefono:</strong> VARCHAR(20)</li>
-                <li><strong>Direccion:</strong> VARCHAR(150)</li>
-                <li><strong>Email:</strong> VARCHAR(100)</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-link"></i> Proveedor_producto</h4>
-              <ul>
-                <li><strong>ID_Proveedor:</strong> Clave foránea (INT)</li>
-                <li><strong>ID_Producto:</strong> Clave foránea (INT)</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-receipt"></i> Factura</h4>
-              <ul>
-                <li><strong>ID_Factura:</strong> Clave primaria (INT)</li>
-                <li><strong>Fecha:</strong> DATE</li>
-                <li><strong>ID_Cliente:</strong> Clave foránea (INT)</li>
-                <li><strong>ID_Empleado:</strong> Clave foránea (INT)</li>
-                <li><strong>ID_MetodoPago:</strong> Clave foránea (INT)</li>
-                <li><strong>Total:</strong> DECIMAL(10,2)</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-list"></i> Factura_producto</h4>
-              <ul>
-                <li><strong>ID_Factura:</strong> Clave foránea (INT)</li>
-                <li><strong>ID_Producto:</strong> Clave foránea (INT)</li>
-                <li><strong>Cantidad:</strong> INT</li>
-                <li><strong>Precio_Unitario:</strong> DECIMAL(10,2)</li>
-              </ul>
-            </div>
-
-            <div class="entity-card">
-              <h4><i class="fas fa-credit-card"></i> Metodo_pago</h4>
-              <ul>
-                <li><strong>ID_MetodoPago:</strong> Clave primaria (INT)</li>
-                <li><strong>Tipo:</strong> VARCHAR(50)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="success-box">
-            <h3><i class="fas fa-link"></i> Relaciones Principales:</h3>
-            <ul>
-              <li><strong>Producto → Categoria_producto:</strong> Muchos a Uno</li>
-              <li><strong>Proveedor_producto → Proveedor:</strong> Muchos a Uno</li>
-              <li><strong>Proveedor_producto → Producto:</strong> Muchos a Uno</li>
-              <li><strong>Factura → Cliente:</strong> Muchos a Uno</li>
-              <li><strong>Factura → Empleado:</strong> Muchos a Uno</li>
-              <li><strong>Factura → Metodo_pago:</strong> Muchos a Uno</li>
-              <li><strong>Factura_producto → Factura:</strong> Muchos a Uno</li>
-              <li><strong>Factura_producto → Producto:</strong> Muchos a Uno</li>
-            </ul>
+          <div class="image-card">
+            <img src="33.jpeg" alt="Consulta 3">
           </div>
         </div>
-      </div>
+      </section>
 
-      <div id="formas" class="tab-content">
-        <div class="section">
-          <h2><i class="fas fa-layer-group"></i> Formas Normales Aplicadas</h2>
-
-          <div class="interactive-card" onclick="toggleCard(this)">
-            <h3>
-              <i class="fas fa-list-ol"></i> 1️⃣ Primera Forma Normal (1FN)
-            </h3>
-            <div class="card-content" style="display: none">
-              <p>
-                <strong>Regla:</strong> Cada columna debe contener valores
-                atómicos (indivisibles) y cada registro debe ser único.
-              </p>
-
-              <h4>❌ Tabla NO normalizada:</h4>
-              <div class="table-container">
-                <table>
-                  <tr>
-                    <th>ID_Cliente</th>
-                    <th>Nombre</th>
-                    <th>Teléfonos</th>
-                    <th>Zapatos_Comprados</th>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Juan Pérez</td>
-                    <td>123-456, 789-012</td>
-                    <td>Nike Air, Adidas Run</td>
-                  </tr>
-                </table>
-              </div>
-
-              <h4>✅ Tabla en 1FN:</h4>
-              <div class="table-container">
-                <table>
-                  <tr>
-                    <th>ID_Cliente</th>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Juan Pérez</td>
-                    <td>123-456-7890</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+      <section id="extras" class="section">
+        <h2>Información Adicional</h2>
+        <div class="image-container">
+          <div class="image-card">
+            <img src="55.jpeg" alt="Extra 1">
           </div>
-
-          <div class="interactive-card" onclick="toggleCard(this)">
-            <h3>
-              <i class="fas fa-sitemap"></i> 2️⃣ Segunda Forma Normal (2FN)
-            </h3>
-            <div class="card-content" style="display: none">
-              <p>
-                <strong>Regla:</strong> Debe estar en 1FN y todos los atributos
-                no clave deben depender completamente de la clave primaria.
-              </p>
-
-              <h4>✅ Ejemplo: Tabla detalle_factura</h4>
-              <div class="table-container">
-                <table>
-                  <tr>
-                    <th>ID_Detalle (PK)</th>
-                    <th>ID_Factura (FK)</th>
-                    <th>ID_Zapato (FK)</th>
-                    <th>Cantidad</th>
-                    <th>PrecioUnitario</th>
-                    <th>Subtotal</th>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>100</td>
-                    <td>50</td>
-                    <td>2</td>
-                    <td>89.99</td>
-                    <td>179.98</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>100</td>
-                    <td>51</td>
-                    <td>1</td>
-                    <td>120.00</td>
-                    <td>120.00</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+          <div class="image-card">
+            <img src="56.jpeg" alt="Extra 2">
           </div>
-
-          <div class="interactive-card" onclick="toggleCard(this)">
-            <h3>
-              <i class="fas fa-network-wired"></i> 3️⃣ Tercera Forma Normal (3FN)
-            </h3>
-            <div class="card-content" style="display: none">
-              <p>
-                <strong>Regla:</strong> Debe estar en 2FN y no debe haber
-                dependencias transitivas.
-              </p>
-
-              <div
-                style="
-                  display: grid;
-                  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                  gap: 1rem;
-                "
-              >
-                <div>
-                  <h5>Tabla Zapato:</h5>
-                  <div class="table-container">
-                    <table>
-                      <tr>
-                        <th>ID_Zapato</th>
-                        <th>Nombre</th>
-                        <th>ID_Categoria</th>
-                      </tr>
-                      <tr>
-                        <td>1</td>
-                        <td>Nike Air Max</td>
-                        <td>1</td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Clarks Oxford</td>
-                        <td>2</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-
-                <div>
-                  <h5>Tabla Categoría:</h5>
-                  <div class="table-container">
-                    <table>
-                      <tr>
-                        <th>ID_Categoria</th>
-                        <th>Nombre</th>
-                      </tr>
-                      <tr>
-                        <td>1</td>
-                        <td>Deportivos</td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Formales</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="image-card">
+            <img src="57.jpeg" alt="Extra 3">
           </div>
         </div>
-      </div>
-
-      <div id="beneficios" class="tab-content">
-        <div class="section">
-          <h2>
-            <i class="fas fa-check-circle"></i> Beneficios del Diseño
-            Normalizado
-          </h2>
-
-          <div class="entity-grid">
-            <div class="interactive-card bounce">
-              <h3>
-                <i class="fas fa-minus-circle text-success"></i> Eliminación de
-                Redundancia
-              </h3>
-              <p>
-                Los datos del cliente se almacenan una sola vez en la tabla
-                cliente, evitando duplicación innecesaria.
-              </p>
-            </div>
-
-            <div class="interactive-card bounce" style="animation-delay: 0.1s">
-              <h3>
-                <i class="fas fa-shield-alt text-primary"></i> Integridad
-                Referencial
-              </h3>
-              <p>
-                Las claves foráneas mantienen la consistencia y validez de las
-                relaciones entre tablas.
-              </p>
-            </div>
-
-            <div class="interactive-card bounce" style="animation-delay: 0.2s">
-              <h3>
-                <i class="fas fa-tools text-warning"></i> Facilidad de
-                Mantenimiento
-              </h3>
-              <p>
-                Cambiar el precio de un zapato solo requiere una actualización
-                en una ubicación.
-              </p>
-            </div>
-
-            <div class="interactive-card bounce" style="animation-delay: 0.3s">
-              <h3>
-                <i class="fas fa-expand-arrows-alt text-info"></i> Escalabilidad
-              </h3>
-              <p>
-                Agregar nuevas categorías o métodos de pago es sencillo y no
-                afecta datos existentes.
-              </p>
-            </div>
-
-            <div class="interactive-card bounce" style="animation-delay: 0.4s">
-              <h3>
-                <i class="fas fa-balance-scale text-success"></i> Consistencia
-              </h3>
-              <p>
-                No hay información contradictoria almacenada en diferentes
-                lugares de la base de datos.
-              </p>
-            </div>
-
-            <div class="interactive-card bounce" style="animation-delay: 0.5s">
-              <h3>
-                <i class="fas fa-puzzle-piece text-primary"></i> Flexibilidad
-              </h3>
-              <p>
-                Las consultas pueden combinar datos de múltiples tablas según
-                las necesidades específicas.
-              </p>
-            </div>
-          </div>
-
-          <div class="highlight">
-            <h3><i class="fas fa-lightbulb"></i> Impacto en el Rendimiento:</h3>
-            <ul>
-              <li>
-                <strong>Espacio de almacenamiento:</strong> Reducción
-                significativa de datos duplicados
-              </li>
-              <li>
-                <strong>Velocidad de escritura:</strong> Menos datos para
-                insertar y actualizar
-              </li>
-              <li>
-                <strong>Integridad:</strong> Menor riesgo de inconsistencias
-              </li>
-              <li>
-                <strong>Mantenimiento:</strong> Cambios centralizados y
-                controlados
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div id="creacion" class="tab-content">
-        <div class="section">
-          <h2><i class="fas fa-plus-circle"></i> Creación de la Base de Datos</h2>
-
-          <div class="code-container">
-            <div class="code-header">
-              <span class="code-title"><i class="fas fa-database"></i> Crear Base de Datos y Tablas</span>
-              <button class="copy-btn" onclick="copyCode('creacion-db')">
-                <i class="fas fa-copy"></i> Copiar
-              </button>
-            </div>
-            <div class="code-block" id="creacion-db">
-CREATE DATABASE VentaDeZapatos;
-USE VentaDeZapatos;
-
-CREATE TABLE Cliente (
-id_cliente INT PRIMARY KEY AUTO_INCREMENT,
-nombre VARCHAR(100) NOT NULL,
-telefono VARCHAR(20),
-direccion VARCHAR(150),
-email VARCHAR(100)
-);
-
-CREATE TABLE Empleado (
-id_empleado INT PRIMARY KEY AUTO_INCREMENT,
-nombre VARCHAR(100) NOT NULL,
-cargo VARCHAR(50)
-);
-
-CREATE TABLE Categoria_Producto (
-id_categoria INT PRIMARY KEY AUTO_INCREMENT,
-nombre VARCHAR(50) NOT NULL,
-descripcion VARCHAR(150)
-);
-
-CREATE TABLE Producto (
-id_producto INT PRIMARY KEY AUTO_INCREMENT,
-modelo VARCHAR(100) NOT NULL,
-talla VARCHAR(10) NOT NULL,
-color VARCHAR(50),
-precio DECIMAL(10,2) NOT NULL,
-id_categoria INT,
-FOREIGN KEY (id_categoria) REFERENCES Categoria_Producto(id_categoria)
-);
-
-CREATE TABLE Metodo_Pago (
-id_metodoPago INT PRIMARY KEY AUTO_INCREMENT,
-tipo VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE Factura (
-id_factura INT PRIMARY KEY AUTO_INCREMENT,
-fecha DATE NOT NULL,
-id_cliente INT NOT NULL,
-id_empleado INT NOT NULL,
-id_metodoPago INT NOT NULL,
-total DECIMAL(10,2) NOT NULL,
-FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
-FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado),
-FOREIGN KEY (id_metodoPago) REFERENCES Metodo_Pago(id_metodoPago)
-);
-
-CREATE TABLE Factura_Producto (
-id_factura INT NOT NULL,
-id_producto INT NOT NULL,
-cantidad INT NOT NULL,
-precio_unitario DECIMAL(10,2) NOT NULL,
-PRIMARY KEY (id_factura, id_producto),
-FOREIGN KEY (id_factura) REFERENCES Factura(id_factura),
-FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
-);
-
-CREATE TABLE Proveedor (
-id_proveedor INT PRIMARY KEY AUTO_INCREMENT,
-nombre VARCHAR(100) NOT NULL,
-telefono VARCHAR(20),
-direccion VARCHAR(150),
-email VARCHAR(100)
-);
-
-CREATE TABLE Proveedor_Producto (
-id_proveedor INT NOT NULL,
-id_producto INT NOT NULL,
-PRIMARY KEY (id_proveedor, id_producto),
-FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id_proveedor),
-FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
-);
-            </div>
-          </div>
-
-          <div class="code-container">
-            <div class="code-header">
-              <span class="code-title"><i class="fas fa-upload"></i> Insertar Datos de Prueba</span>
-              <button class="copy-btn" onclick="copyCode('inserts-data')">
-                <i class="fas fa-copy"></i> Copiar
-              </button>
-            </div>
-            <div class="code-block" id="inserts-data">
-INSERT INTO Cliente (nombre, telefono, direccion, email) VALUES
-('Juan Pérez', '3111234567', 'Calle 10 #15-20', 'juanperez@mail.com'),
-('María López', '3109876543', 'Carrera 45 #22-10', 'marialopez@mail.com');
-
-INSERT INTO Empleado (nombre, cargo) VALUES
-('Carlos Gómez', 'Vendedor'),
-('Ana Torres', 'Cajera');
-
-INSERT INTO Metodo_Pago (tipo) VALUES
-('Efectivo'),
-('Tarjeta'),
-('Transferencia');
-
-INSERT INTO Categoria_Producto (nombre, descripcion) VALUES
-('Deportivo', 'Zapatos deportivos para correr y entrenar'),
-('Casual', 'Zapatos de uso diario'),
-('Formal', 'Zapatos elegantes para oficina y eventos');
-
-INSERT INTO Producto (modelo, talla, color, precio, id_categoria) VALUES
-('Nike Air Zoom', '42', 'Negro', 350000, 1),
-('Adidas UltraBoost', '41', 'Blanco', 400000, 1),
-('Mocasín Cuero', '43', 'Café', 280000, 3),
-('Tenis Vans', '40', 'Azul', 220000, 2);
-
-INSERT INTO Proveedor (nombre, telefono, direccion, email) VALUES
-('Distribuidora XYZ', '3201234567', 'Av 30 #45-67', 'contacto@xyz.com'),
-('Calzado Mundial', '3009876543', 'Calle 80 #50-10', 'ventas@calzadomundial.com');
-
-INSERT INTO Proveedor_Producto (id_proveedor, id_producto) VALUES
-(1, 1),
-(1, 2),
-(2, 3),
-(2, 4);
-
-INSERT INTO Factura (fecha, id_cliente, id_empleado, id_metodoPago, total) VALUES
-('2025-08-20', 1, 1, 2, 750000),
-('2025-08-21', 2, 2, 1, 220000);
-
-INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario) VALUES
-(1, 1, 1, 350000),
-(1, 2, 1, 400000),
-(2, 4, 1, 220000);
-            </div>
-          </div>
-
-          <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-            <img src="./1.jpeg" alt="Imagen 1 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-            <img src="./2.jpeg" alt="Imagen 2 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-            <img src="./3.jpeg" alt="Imagen 3 Creación" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-          </div>
-        </div>
-      </div>
-
-      <div id="consultas" class="tab-content">
-        <div class="section">
-          <h2><i class="fas fa-search"></i> Consultas SQL</h2>
-
-          <div class="interactive-card" onclick="toggleCard(this)">
-            <h3><i class="fas fa-list"></i> Consultas Simples</h3>
-            <div class="card-content" style="display: none">
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Ver todas las facturas</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-facturas')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-facturas">SELECT * FROM Factura;</div>
-              </div>
-
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Ver proveedores con contacto</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-proveedores')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-proveedores">SELECT nombre, telefono, direccion FROM proveedor;</div>
-              </div>
-
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Buscar cliente específico</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-cliente')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-cliente">SELECT * FROM cliente where Nombre like "%Juan Pérez%";</div>
-              </div>
-
-              <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <img src="./11.jpeg" alt="Imagen 1 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./22.jpeg" alt="Imagen 2 Consultas Simples" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-              </div>
-            </div>
-          </div>
-
-          <div class="interactive-card" onclick="toggleCard(this)">
-            <h3><i class="fas fa-link"></i> Consultas Intermedias</h3>
-            <div class="card-content" style="display: none">
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Facturas con empleado que las gestionó</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-intermedia-1')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-intermedia-1">
-SELECT f.id_factura, f.fecha, c.nombre AS cliente, e.nombre AS empleado, f.total
-FROM factura f
-JOIN cliente c ON f.id_cliente = c.id_cliente
-JOIN empleado e ON f.id_empleado = e.id_empleado;
-                </div>
-              </div>
-
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Facturas con detalle de productos</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-intermedia-2')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-intermedia-2">
-SELECT f.id_factura, f.fecha, c.nombre AS cliente,
-p.modelo AS producto, df.cantidad, df.precio_unitario,
-(df.cantidad * df.precio_unitario) AS subtotal
-FROM factura f
-JOIN cliente c ON f.id_cliente = c.id_cliente
-JOIN factura_producto df ON f.id_factura = df.id_factura
-JOIN producto p ON df.id_producto = p.id_producto
-ORDER BY f.id_factura;
-                </div>
-              </div>
-
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Proveedores con sus productos</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-intermedia-3')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-intermedia-3">
-SELECT pr.nombre AS proveedor, pr.telefono, p.modelo, p.precio
-FROM proveedor pr
-JOIN proveedor_producto pp ON pr.id_proveedor = pp.id_proveedor
-JOIN producto p ON pp.id_producto = p.id_producto;
-                </div>
-              </div>
-
-              <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <img src="./33.jpeg" alt="Imagen 1 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./55.jpeg" alt="Imagen 2 Consultas Intermedias" style="max-width: 45%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-              </div>
-            </div>
-          </div>
-
-          <div class="interactive-card" onclick="toggleCard(this)">
-            <h3><i class="fas fa-chart-bar"></i> Consultas Avanzadas</h3>
-            <div class="card-content" style="display: none">
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Ingreso promedio por factura</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-1')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-avanzada-1">SELECT AVG(total) AS promedio_ingresos FROM factura;</div>
-              </div>
-
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Top 3 empleados con más facturas</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-2')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-avanzada-2">
-SELECT e.nombre AS empleado, COUNT(f.id_factura) AS total_facturas
-FROM empleado e
-JOIN factura f ON e.id_empleado = f.id_empleado
-GROUP BY e.nombre
-ORDER BY total_facturas DESC
-LIMIT 3;
-                </div>
-              </div>
-
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Clientes que gastaron más que el promedio</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-3')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-avanzada-3">
-SELECT c.nombre, SUM(f.total) AS gasto_total
-FROM cliente c
-JOIN factura f ON c.id_cliente = f.id_cliente
-GROUP BY c.nombre
-HAVING gasto_total > (SELECT AVG(total) FROM factura)
-ORDER BY gasto_total DESC;
-                </div>
-              </div>
-
-              <div class="code-container">
-                <div class="code-header">
-                  <span class="code-title">Proveedor con más productos distintos</span>
-                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-4')">
-                    <i class="fas fa-copy"></i> Copiar
-                  </button>
-                </div>
-                <div class="code-block" id="consulta-avanzada-4">
-SELECT pr.nombre AS proveedor, COUNT(DISTINCT pp.id_producto) AS total_productos
-FROM proveedor pr
-JOIN proveedor_producto pp ON pr.id_proveedor = pp.id_proveedor
-GROUP BY pr.nombre
-ORDER BY total_productos DESC
-LIMIT 1;
-                </div>
-              </div>
-
-              <div class="image-gallery" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <img src="./56.jpeg" alt="Imagen 1 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./57.jpeg" alt="Imagen 2 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-                <img src="./144.jpeg" alt="Imagen 3 Consultas Avanzadas" style="max-width: 30%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="extras" class="tab-content">
-        <div class="section">
-          <h2><i class="fas fa-star"></i> Funcionalidades Extras</h2>
-
-          <div class="highlight">
-            <h3><i class="fas fa-info-circle"></i> Información Adicional del Sistema</h3>
-            <p>Esta sección está preparada para incluir funcionalidades adicionales como:</p>
-            <ul>
-              <li><i class="fas fa-chart-line"></i> Reportes y estadísticas avanzadas</li>
-              <li><i class="fas fa-cog"></i> Procedimientos almacenados</li>
-              <li><i class="fas fa-shield-alt"></i> Triggers y restricciones</li>
-              <li><i class="fas fa-users"></i> Gestión de usuarios y permisos</li>
-              <li><i class="fas fa-file-export"></i> Exportación de datos</li>
-              <li><i class="fas fa-history"></i> Auditoría y logs del sistema</li>
-            </ul>
-          </div>
-
-          <div class="info-box">
-            <h3><i class="fas fa-lightbulb"></i> Próximas Implementaciones</h3>
-            <p>El sistema está diseñado para ser extensible. Algunas mejoras futuras podrían incluir:</p>
-            <ul>
-              <li>API REST para integración con aplicaciones móviles</li>
-              <li>Dashboard interactivo con gráficos en tiempo real</li>
-              <li>Sistema de inventario con alertas de stock bajo</li>
-              <li>Módulo de promociones y descuentos</li>
-              <li>Reportes automáticos por email</li>
-              <li>Backup automático de la base de datos</li>
-            </ul>
-          </div>
-
-          <div class="success-box">
-            <h3><i class="fas fa-check-double"></i> Validación del Diseño</h3>
-            <p>El esquema de base de datos cumple con todas las formas normales:</p>
-            <ul>
-              <li><strong>1FN:</strong> Todos los atributos son atómicos</li>
-              <li><strong>2FN:</strong> No hay dependencias parciales</li>
-              <li><strong>3FN:</strong> No hay dependencias transitivas</li>
-              <li><strong>Integridad referencial:</strong> Claves foráneas mantienen consistencia</li>
-              <li><strong>Normalización BCNF:</strong> Diseño óptimo para consultas complejas</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-    <!-- Floating Action Button -->
-    <button class="fab" onclick="scrollToTop()" title="Volver arriba">
-      <i class="fas fa-arrow-up"></i>
-    </button>
+      </section>
+    </main>
 
     <!-- Image Modal -->
-    <div class="image-modal" id="imageModal">
-      <span class="close-modal" onclick="closeImageModal()">&times;</span>
-      <div class="modal-content">
-        <img id="modalImage" src="" alt="Imagen ampliada">
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button" class="btn-close btn-close-white close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            <img src="" class="modal-image" id="modalImage" alt="Imagen Ampliada">
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Tab Navigation
-      function showTab(tabName) {
-        // Hide all tab contents
-        const tabContents = document.querySelectorAll(".tab-content");
-        tabContents.forEach((content) => {
-          content.classList.remove("active");
+      // Tab functionality
+      const tabs = document.querySelectorAll(".nav-tab");
+      const sections = document.querySelectorAll(".section");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          // Remove active class from all tabs and sections
+          tabs.forEach(t => t.classList.remove("active"));
+          sections.forEach(s => s.style.display = "none");
+
+          // Add active class to clicked tab
+          tab.classList.add("active");
+          
+          // Show corresponding section
+          const sectionId = tab.dataset.tab;
+          document.getElementById(sectionId).style.display = "block";
         });
-
-        // Remove active class from all tabs
-        const navTabs = document.querySelectorAll(".nav-tab");
-        navTabs.forEach((tab) => {
-          tab.classList.remove("active");
-        });
-
-        // Show selected tab content
-        document.getElementById(tabName).classList.add("active");
-
-        // Add active class to clicked tab
-        event.target.classList.add("active");
-
-        // Update progress
-        updateProgress(tabName);
-
-        // Scroll to top smoothly
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-
-      // Update Progress Indicator
-      function updateProgress(tabName) {
-        const steps = document.querySelectorAll(".progress-step");
-        const tabOrder = [
-          "intro",
-          "erd",
-          "formas",
-          "beneficios",
-          "creacion",
-          "consultas",
-          "extras",
-        ];
-        const currentIndex = tabOrder.indexOf(tabName);
-
-        steps.forEach((step, index) => {
-          step.classList.remove("active", "completed");
-          if (index < currentIndex) {
-            step.classList.add("completed");
-          } else if (index === currentIndex) {
-            step.classList.add("active");
-          }
-        });
-      }
-
-      // Toggle Interactive Cards
-      function toggleCard(card) {
-        const content = card.querySelector(".card-content");
-        const isExpanded = card.classList.contains("expanded");
-
-        if (isExpanded) {
-          content.style.display = "none";
-          card.classList.remove("expanded");
-        } else {
-          content.style.display = "block";
-          card.classList.add("expanded");
-          content.classList.add("fade-in");
-        }
-      }
-
-      // Copy Code to Clipboard
-      function copyCode(elementId) {
-        const codeBlock = document.getElementById(elementId);
-        const text = codeBlock.textContent;
-
-        navigator.clipboard
-          .writeText(text)
-          .then(() => {
-            // Show feedback
-            const button = event.target.closest(".copy-btn");
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-            button.style.background = "#27ae60";
-
-            setTimeout(() => {
-              button.innerHTML = originalText;
-              button.style.background = "#3498db";
-            }, 2000);
-          })
-          .catch((err) => {
-            console.error("Error al copiar: ", err);
-            // Fallback for older browsers
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-          });
-      }
-
-      // Scroll to Top
-      function scrollToTop() {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      }
-
-      // Keyboard Navigation
-      document.addEventListener("keydown", (e) => {
-        if (e.ctrlKey || e.metaKey) {
-          const tabs = [
-            "intro",
-            "erd",
-            "formas",
-            "beneficios",
-            "creacion",
-            "consultas",
-            "extras",
-          ];
-          const currentTab = document.querySelector(".tab-content.active").id;
-          const currentIndex = tabs.indexOf(currentTab);
-
-          if (e.key === "ArrowLeft" && currentIndex > 0) {
-            e.preventDefault();
-            const prevTab = tabs[currentIndex - 1];
-            document.querySelector(`[onclick="showTab('${prevTab}')"]`).click();
-          } else if (e.key === "ArrowRight" && currentIndex < tabs.length - 1) {
-            e.preventDefault();
-            const nextTab = tabs[currentIndex + 1];
-            document.querySelector(`[onclick="showTab('${nextTab}')"]`).click();
-          }
-        }
       });
 
-      // Smooth scrolling for internal links
-      document.addEventListener("DOMContentLoaded", () => {
-        // Add animation classes to elements as they come into view
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: "0px 0px -50px 0px",
-        };
+      // Set initial state
+      document.getElementById("creacion").style.display = "block";
 
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("fade-in");
-            }
-          });
-        }, observerOptions);
-
-        // Observe all sections and cards
-        document
-          .querySelectorAll(".section, .entity-card, .interactive-card")
-          .forEach((el) => {
-            observer.observe(el);
-          });
-
-        // Initialize progress
-        updateProgress("intro");
-      });
-
-      // Add touch support for mobile
-      let touchStartX = 0;
-      let touchEndX = 0;
-
-      document.addEventListener("touchstart", (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-      });
-
-      document.addEventListener("touchend", (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-      });
-
-      function handleSwipe() {
-        const swipeThreshold = 100;
-        const diff = touchStartX - touchEndX;
-
-        if (Math.abs(diff) > swipeThreshold) {
-          const tabs = [
-            "intro",
-            "erd",
-            "formas",
-            "beneficios",
-            "creacion",
-            "consultas",
-            "extras",
-          ];
-          const currentTab = document.querySelector(".tab-content.active").id;
-          const currentIndex = tabs.indexOf(currentTab);
-
-          if (diff > 0 && currentIndex < tabs.length - 1) {
-            // Swipe left - next tab
-            const nextTab = tabs[currentIndex + 1];
-            document.querySelector(`[onclick="showTab('${nextTab}')"]`).click();
-          } else if (diff < 0 && currentIndex > 0) {
-            // Swipe right - previous tab
-            const prevTab = tabs[currentIndex - 1];
-            document.querySelector(`[onclick="showTab('${prevTab}')"]`).click();
-          }
-        }
-      }
-
-      // Image Modal Functions
-      function openImageModal(src, alt) {
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImage');
-        modal.style.display = 'flex';
-        modalImg.src = src;
-        modalImg.alt = alt;
-        modal.classList.add('active');
-      }
-
-      function closeImageModal() {
-        const modal = document.getElementById('imageModal');
-        modal.style.display = 'none';
-        modal.classList.remove('active');
-      }
-
-      // Close modal when clicking outside the image
-      document.getElementById('imageModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-          closeImageModal();
-        }
-      });
-
-      // Add click event listeners to all images in galleries
-      document.addEventListener('DOMContentLoaded', function() {
-        const galleryImages = document.querySelectorAll('.image-gallery img');
-        galleryImages.forEach(img => {
-          img.style.cursor = 'pointer';
-          img.addEventListener('click', function() {
-            openImageModal(this.src, this.alt);
-          });
+      // Image modal functionality
+      document.querySelectorAll('.image-card img').forEach(img => {
+        img.addEventListener('click', function() {
+          const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+          const modalImg = document.getElementById('modalImage');
+          modalImg.src = this.src;
+          modal.show();
         });
       });
     </script>
