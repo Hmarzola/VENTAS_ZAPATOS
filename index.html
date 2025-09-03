@@ -537,6 +537,15 @@
         <button class="nav-tab" onclick="showTab('beneficios')">
           <i class="fas fa-check-circle"></i> Beneficios
         </button>
+        <button class="nav-tab" onclick="showTab('creacion')">
+          <i class="fas fa-plus-circle"></i> Creación
+        </button>
+        <button class="nav-tab" onclick="showTab('consultas')">
+          <i class="fas fa-search"></i> Consultas
+        </button>
+        <button class="nav-tab" onclick="showTab('extras')">
+          <i class="fas fa-star"></i> Extras
+        </button>
       </div>
 
       <!-- Tab Contents -->
@@ -989,6 +998,356 @@
         </div>
       </div>
 
+      <div id="creacion" class="tab-content">
+        <div class="section">
+          <h2><i class="fas fa-plus-circle"></i> Creación de la Base de Datos</h2>
+
+          <div class="code-container">
+            <div class="code-header">
+              <span class="code-title"><i class="fas fa-database"></i> Crear Base de Datos y Tablas</span>
+              <button class="copy-btn" onclick="copyCode('creacion-db')">
+                <i class="fas fa-copy"></i> Copiar
+              </button>
+            </div>
+            <div class="code-block" id="creacion-db">
+CREATE DATABASE VentaDeZapatos;
+USE VentaDeZapatos;
+
+CREATE TABLE Cliente (
+id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(100) NOT NULL,
+telefono VARCHAR(20),
+direccion VARCHAR(150),
+email VARCHAR(100)
+);
+
+CREATE TABLE Empleado (
+id_empleado INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(100) NOT NULL,
+cargo VARCHAR(50)
+);
+
+CREATE TABLE Categoria_Producto (
+id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(50) NOT NULL,
+descripcion VARCHAR(150)
+);
+
+CREATE TABLE Producto (
+id_producto INT PRIMARY KEY AUTO_INCREMENT,
+modelo VARCHAR(100) NOT NULL,
+talla VARCHAR(10) NOT NULL,
+color VARCHAR(50),
+precio DECIMAL(10,2) NOT NULL,
+id_categoria INT,
+FOREIGN KEY (id_categoria) REFERENCES Categoria_Producto(id_categoria)
+);
+
+CREATE TABLE Metodo_Pago (
+id_metodoPago INT PRIMARY KEY AUTO_INCREMENT,
+tipo VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Factura (
+id_factura INT PRIMARY KEY AUTO_INCREMENT,
+fecha DATE NOT NULL,
+id_cliente INT NOT NULL,
+id_empleado INT NOT NULL,
+id_metodoPago INT NOT NULL,
+total DECIMAL(10,2) NOT NULL,
+FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
+FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado),
+FOREIGN KEY (id_metodoPago) REFERENCES Metodo_Pago(id_metodoPago)
+);
+
+CREATE TABLE Factura_Producto (
+id_factura INT NOT NULL,
+id_producto INT NOT NULL,
+cantidad INT NOT NULL,
+precio_unitario DECIMAL(10,2) NOT NULL,
+PRIMARY KEY (id_factura, id_producto),
+FOREIGN KEY (id_factura) REFERENCES Factura(id_factura),
+FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+);
+
+CREATE TABLE Proveedor (
+id_proveedor INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(100) NOT NULL,
+telefono VARCHAR(20),
+direccion VARCHAR(150),
+email VARCHAR(100)
+);
+
+CREATE TABLE Proveedor_Producto (
+id_proveedor INT NOT NULL,
+id_producto INT NOT NULL,
+PRIMARY KEY (id_proveedor, id_producto),
+FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id_proveedor),
+FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+);
+            </div>
+          </div>
+
+          <div class="code-container">
+            <div class="code-header">
+              <span class="code-title"><i class="fas fa-upload"></i> Insertar Datos de Prueba</span>
+              <button class="copy-btn" onclick="copyCode('inserts-data')">
+                <i class="fas fa-copy"></i> Copiar
+              </button>
+            </div>
+            <div class="code-block" id="inserts-data">
+INSERT INTO Cliente (nombre, telefono, direccion, email) VALUES
+('Juan Pérez', '3111234567', 'Calle 10 #15-20', 'juanperez@mail.com'),
+('María López', '3109876543', 'Carrera 45 #22-10', 'marialopez@mail.com');
+
+INSERT INTO Empleado (nombre, cargo) VALUES
+('Carlos Gómez', 'Vendedor'),
+('Ana Torres', 'Cajera');
+
+INSERT INTO Metodo_Pago (tipo) VALUES
+('Efectivo'),
+('Tarjeta'),
+('Transferencia');
+
+INSERT INTO Categoria_Producto (nombre, descripcion) VALUES
+('Deportivo', 'Zapatos deportivos para correr y entrenar'),
+('Casual', 'Zapatos de uso diario'),
+('Formal', 'Zapatos elegantes para oficina y eventos');
+
+INSERT INTO Producto (modelo, talla, color, precio, id_categoria) VALUES
+('Nike Air Zoom', '42', 'Negro', 350000, 1),
+('Adidas UltraBoost', '41', 'Blanco', 400000, 1),
+('Mocasín Cuero', '43', 'Café', 280000, 3),
+('Tenis Vans', '40', 'Azul', 220000, 2);
+
+INSERT INTO Proveedor (nombre, telefono, direccion, email) VALUES
+('Distribuidora XYZ', '3201234567', 'Av 30 #45-67', 'contacto@xyz.com'),
+('Calzado Mundial', '3009876543', 'Calle 80 #50-10', 'ventas@calzadomundial.com');
+
+INSERT INTO Proveedor_Producto (id_proveedor, id_producto) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(2, 4);
+
+INSERT INTO Factura (fecha, id_cliente, id_empleado, id_metodoPago, total) VALUES
+('2025-08-20', 1, 1, 2, 750000),
+('2025-08-21', 2, 2, 1, 220000);
+
+INSERT INTO Factura_Producto (id_factura, id_producto, cantidad, precio_unitario) VALUES
+(1, 1, 1, 350000),
+(1, 2, 1, 400000),
+(2, 4, 1, 220000);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="consultas" class="tab-content">
+        <div class="section">
+          <h2><i class="fas fa-search"></i> Consultas SQL</h2>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <h3><i class="fas fa-list"></i> Consultas Simples</h3>
+            <div class="card-content" style="display: none">
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Ver todas las facturas</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-facturas')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-facturas">SELECT * FROM Factura;</div>
+              </div>
+
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Ver proveedores con contacto</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-proveedores')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-proveedores">SELECT nombre, telefono, direccion FROM proveedor;</div>
+              </div>
+
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Buscar cliente específico</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-cliente')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-cliente">SELECT * FROM cliente where Nombre like "%Juan Pérez%";</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <h3><i class="fas fa-link"></i> Consultas Intermedias</h3>
+            <div class="card-content" style="display: none">
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Facturas con empleado que las gestionó</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-intermedia-1')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-intermedia-1">
+SELECT f.id_factura, f.fecha, c.nombre AS cliente, e.nombre AS empleado, f.total
+FROM factura f
+JOIN cliente c ON f.id_cliente = c.id_cliente
+JOIN empleado e ON f.id_empleado = e.id_empleado;
+                </div>
+              </div>
+
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Facturas con detalle de productos</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-intermedia-2')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-intermedia-2">
+SELECT f.id_factura, f.fecha, c.nombre AS cliente,
+p.modelo AS producto, df.cantidad, df.precio_unitario,
+(df.cantidad * df.precio_unitario) AS subtotal
+FROM factura f
+JOIN cliente c ON f.id_cliente = c.id_cliente
+JOIN factura_producto df ON f.id_factura = df.id_factura
+JOIN producto p ON df.id_producto = p.id_producto
+ORDER BY f.id_factura;
+                </div>
+              </div>
+
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Proveedores con sus productos</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-intermedia-3')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-intermedia-3">
+SELECT pr.nombre AS proveedor, pr.telefono, p.modelo, p.precio
+FROM proveedor pr
+JOIN proveedor_producto pp ON pr.id_proveedor = pp.id_proveedor
+JOIN producto p ON pp.id_producto = p.id_producto;
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-card" onclick="toggleCard(this)">
+            <h3><i class="fas fa-chart-bar"></i> Consultas Avanzadas</h3>
+            <div class="card-content" style="display: none">
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Ingreso promedio por factura</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-1')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-avanzada-1">SELECT AVG(total) AS promedio_ingresos FROM factura;</div>
+              </div>
+
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Top 3 empleados con más facturas</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-2')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-avanzada-2">
+SELECT e.nombre AS empleado, COUNT(f.id_factura) AS total_facturas
+FROM empleado e
+JOIN factura f ON e.id_empleado = f.id_empleado
+GROUP BY e.nombre
+ORDER BY total_facturas DESC
+LIMIT 3;
+                </div>
+              </div>
+
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Clientes que gastaron más que el promedio</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-3')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-avanzada-3">
+SELECT c.nombre, SUM(f.total) AS gasto_total
+FROM cliente c
+JOIN factura f ON c.id_cliente = f.id_cliente
+GROUP BY c.nombre
+HAVING gasto_total > (SELECT AVG(total) FROM factura)
+ORDER BY gasto_total DESC;
+                </div>
+              </div>
+
+              <div class="code-container">
+                <div class="code-header">
+                  <span class="code-title">Proveedor con más productos distintos</span>
+                  <button class="copy-btn" onclick="copyCode('consulta-avanzada-4')">
+                    <i class="fas fa-copy"></i> Copiar
+                  </button>
+                </div>
+                <div class="code-block" id="consulta-avanzada-4">
+SELECT pr.nombre AS proveedor, COUNT(DISTINCT pp.id_producto) AS total_productos
+FROM proveedor pr
+JOIN proveedor_producto pp ON pr.id_proveedor = pp.id_proveedor
+GROUP BY pr.nombre
+ORDER BY total_productos DESC
+LIMIT 1;
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="extras" class="tab-content">
+        <div class="section">
+          <h2><i class="fas fa-star"></i> Funcionalidades Extras</h2>
+
+          <div class="highlight">
+            <h3><i class="fas fa-info-circle"></i> Información Adicional del Sistema</h3>
+            <p>Esta sección está preparada para incluir funcionalidades adicionales como:</p>
+            <ul>
+              <li><i class="fas fa-chart-line"></i> Reportes y estadísticas avanzadas</li>
+              <li><i class="fas fa-cog"></i> Procedimientos almacenados</li>
+              <li><i class="fas fa-shield-alt"></i> Triggers y restricciones</li>
+              <li><i class="fas fa-users"></i> Gestión de usuarios y permisos</li>
+              <li><i class="fas fa-file-export"></i> Exportación de datos</li>
+              <li><i class="fas fa-history"></i> Auditoría y logs del sistema</li>
+            </ul>
+          </div>
+
+          <div class="info-box">
+            <h3><i class="fas fa-lightbulb"></i> Próximas Implementaciones</h3>
+            <p>El sistema está diseñado para ser extensible. Algunas mejoras futuras podrían incluir:</p>
+            <ul>
+              <li>API REST para integración con aplicaciones móviles</li>
+              <li>Dashboard interactivo con gráficos en tiempo real</li>
+              <li>Sistema de inventario con alertas de stock bajo</li>
+              <li>Módulo de promociones y descuentos</li>
+              <li>Reportes automáticos por email</li>
+              <li>Backup automático de la base de datos</li>
+            </ul>
+          </div>
+
+          <div class="success-box">
+            <h3><i class="fas fa-check-double"></i> Validación del Diseño</h3>
+            <p>El esquema de base de datos cumple con todas las formas normales:</p>
+            <ul>
+              <li><strong>1FN:</strong> Todos los atributos son atómicos</li>
+              <li><strong>2FN:</strong> No hay dependencias parciales</li>
+              <li><strong>3FN:</strong> No hay dependencias transitivas</li>
+              <li><strong>Integridad referencial:</strong> Claves foráneas mantienen consistencia</li>
+              <li><strong>Normalización BCNF:</strong> Diseño óptimo para consultas complejas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     <!-- Floating Action Button -->
     <button class="fab" onclick="scrollToTop()" title="Volver arriba">
       <i class="fas fa-arrow-up"></i>
@@ -1030,8 +1389,9 @@
           "erd",
           "formas",
           "beneficios",
-          "codigo",
+          "creacion",
           "consultas",
+          "extras",
         ];
         const currentIndex = tabOrder.indexOf(tabName);
 
@@ -1107,8 +1467,9 @@
             "erd",
             "formas",
             "beneficios",
-            "codigo",
+            "creacion",
             "consultas",
+            "extras",
           ];
           const currentTab = document.querySelector(".tab-content.active").id;
           const currentIndex = tabs.indexOf(currentTab);
@@ -1175,6 +1536,9 @@
             "erd",
             "formas",
             "beneficios",
+            "creacion",
+            "consultas",
+            "extras",
           ];
           const currentTab = document.querySelector(".tab-content.active").id;
           const currentIndex = tabs.indexOf(currentTab);
